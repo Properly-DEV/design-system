@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RLY Starter Kit — Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-family-body);
+      background: var(--utilities-bg-section);
+      color: var(--colors-fg-primary);
+      padding: 48px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── Layout ── */
+    header {
+      margin-bottom: 64px;
+      border-bottom: 1px solid var(--colors-border-tertiary);
+      padding-bottom: 32px;
+    }
+    header h1 {
+      font-size: var(--heading-2-size);
+      line-height: var(--heading-2-line-height);
+      font-weight: 500;
+      letter-spacing: -0.5px;
+    }
+    header p {
+      font-size: var(--body-2-size);
+      color: var(--colors-fg-secondary);
+      margin-top: 8px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 64px;
+    }
+    nav a {
+      font-size: var(--body-3-size);
+      font-weight: 500;
+      color: var(--colors-fg-secondary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--colors-border-tertiary);
+      border-radius: var(--radius-full);
+      transition: all 0.15s;
+    }
+    nav a:hover {
+      border-color: var(--colors-border-brand-primary);
+      color: var(--colors-fg-brand-primary);
+      background: var(--colors-bg-brand-primary);
+      color: var(--colors-fg-primary);
+    }
+
+    section { margin-bottom: 72px; }
+    section h2 {
+      font-size: var(--heading-4-size);
+      line-height: var(--heading-4-line-height);
+      font-weight: 500;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    section h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--colors-border-tertiary);
+    }
+
+    /* ── Token table ── */
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--body-3-size);
+    }
+    .token-table thead th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: var(--label-6-size);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--colors-fg-tertiary);
+      border-bottom: 1px solid var(--colors-border-tertiary);
+    }
+    .token-table tbody tr:hover { background: var(--colors-neutral-25); }
+    .token-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--colors-border-tertiary);
+      vertical-align: middle;
+    }
+    .token-name {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+      color: var(--colors-fg-primary);
+    }
+    .token-value {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+      color: var(--colors-fg-secondary);
+    }
+
+    /* ── Color swatches ── */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .swatch {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--colors-border-tertiary);
+    }
+    .swatch-color {
+      height: 72px;
+      width: 100%;
+    }
+    .swatch-info {
+      padding: 10px 12px;
+      background: var(--colors-bg-primary);
+    }
+    .swatch-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--colors-fg-primary);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .swatch-hex {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 11px;
+      color: var(--colors-fg-tertiary);
+    }
+    .swatch-var {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 10px;
+      color: var(--colors-fg-quaternary);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── Typography specimens ── */
+    .type-specimen {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--colors-border-tertiary);
+    }
+    .type-specimen:last-child { border-bottom: none; }
+    .type-meta {
+      min-width: 180px;
+      flex-shrink: 0;
+    }
+    .type-meta .type-label {
+      font-size: var(--label-6-size);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--colors-fg-tertiary);
+    }
+    .type-meta .type-details {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 11px;
+      color: var(--colors-fg-quaternary);
+      margin-top: 4px;
+    }
+    .type-preview { flex: 1; color: var(--colors-fg-primary); }
+
+    /* ── Radius demos ── */
+    .radius-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .radius-demo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .radius-box {
+      width: 80px;
+      height: 80px;
+      background: var(--colors-bg-brand-primary);
+      border: 2px solid var(--colors-brand-600);
+    }
+    .radius-label {
+      font-size: 11px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      color: var(--colors-fg-secondary);
+      text-align: center;
+    }
+
+    /* ── Spacing demos ── */
+    .spacing-list { display: flex; flex-direction: column; gap: 12px; }
+    .spacing-item { display: flex; align-items: center; gap: 16px; }
+    .spacing-bar {
+      height: 24px;
+      background: var(--colors-bg-brand-primary);
+      border-radius: var(--radius-xs);
+      flex-shrink: 0;
+    }
+    .spacing-info {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+      color: var(--colors-fg-secondary);
+    }
+
+    /* ── Shadow demos ── */
+    .shadow-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .shadow-demo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .shadow-box {
+      width: 100px;
+      height: 100px;
+      background: var(--colors-bg-primary);
+      border-radius: var(--radius-md);
+    }
+    .shadow-box.sm { box-shadow: var(--shadow-sm); }
+    .shadow-box.md { box-shadow: var(--shadow-md); }
+    .shadow-box.lg { box-shadow: var(--shadow-lg); }
+
+    /* ── Icon chips ── */
+    .icon-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .icon-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 1px solid var(--colors-border-tertiary);
+      border-radius: var(--radius-full);
+      font-size: var(--body-3-size);
+      color: var(--colors-fg-secondary);
+    }
+    .icon-chip span {
+      font-size: 10px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      color: var(--colors-fg-quaternary);
+    }
+    .icon-dot {
+      width: var(--icon-size);
+      height: var(--icon-size);
+      border-radius: 50%;
+      background: var(--colors-neutral-50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    /* ── Component showcase ── */
+    .component-section {
+      margin-bottom: 80px;
+    }
+    .component-header {
+      margin-bottom: 32px;
+    }
+    .component-header h2 {
+      font-size: var(--heading-3-size);
+      line-height: var(--heading-3-line-height);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .component-header h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--colors-border-tertiary);
+    }
+    .component-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 11px;
+      color: var(--colors-fg-tertiary);
+      font-family: "SF Mono", "Fira Code", monospace;
+    }
+    .component-meta span { color: var(--colors-fg-quaternary); }
+
+    /* variant grid */
+    .variant-group { margin-bottom: 40px; }
+    .variant-group-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--colors-fg-tertiary);
+      margin-bottom: 16px;
+    }
+    .variant-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 32px;
+      background: var(--colors-neutral-25);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--colors-border-tertiary);
+    }
+    .variant-row.dark-bg {
+      background: var(--utilities-bg-section-inverse);
+      border-color: #333;
+    }
+    .variant-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      min-width: 80px;
+    }
+    .variant-label {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--colors-fg-quaternary);
+      text-align: center;
+    }
+    .variant-row.dark-bg .variant-label { color: #666; }
+
+    /* ── Button component ── */
+    .rly-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      padding: 0 6px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      outline: none;
+      user-select: none;
+      font-family: var(--font-family-body);
+      font-size: var(--button-2-size);
+      line-height: var(--button-2-line-height);
+      font-weight: var(--button-2-weight);
+      text-transform: capitalize;
+      white-space: nowrap;
+      gap: 0;
+      transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+      overflow: hidden;
+    }
+    .rly-btn-text { padding: 0 6px; }
+    .rly-btn-icon { display: flex; flex-shrink: 0; }
+
+    /* Primary */
+    .rly-btn-primary            { background: var(--colors-bg-brand-primary);   color: var(--colors-fg-primary); }
+    .rly-btn-primary.hovered    { background: var(--colors-bg-brand-secondary);  }
+    .rly-btn-primary.pressed    { background: var(--colors-bg-brand-tertiary);   }
+    .rly-btn-primary.focused    { background: var(--colors-bg-brand-secondary); overflow: visible; }
+    .rly-btn-primary.disabled   { background: var(--colors-bg-brand-primary); opacity: 0.4; cursor: not-allowed; }
+    .rly-btn-primary.loading    { background: var(--colors-bg-brand-primary); }
+
+    /* Secondary */
+    .rly-btn-secondary          { background: transparent; color: var(--colors-fg-primary); border: 1px solid var(--colors-border-secondary); }
+    .rly-btn-secondary.hovered  { border-color: var(--colors-border-primary); }
+    .rly-btn-secondary.pressed  { border-color: var(--colors-border-secondary); }
+    .rly-btn-secondary.focused  { border-color: var(--colors-border-primary); overflow: visible; }
+    .rly-btn-secondary.disabled { border-color: var(--colors-border-secondary); opacity: 0.4; cursor: not-allowed; }
+    .rly-btn-secondary.loading  { border-color: var(--colors-border-secondary); }
+
+    /* Tertiary */
+    .rly-btn-tertiary           { background: transparent; border: none; color: var(--colors-fg-secondary); }
+    .rly-btn-tertiary.focused   { overflow: visible; }
+    .rly-btn-tertiary.disabled  { opacity: 0.4; cursor: not-allowed; }
+
+    /* Focus ring (rendered as ::after pseudo) */
+    .rly-btn.focused::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border: 2px solid var(--colors-border-focus);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+    .rly-btn-secondary.focused::after { inset: -3px; border-radius: 10px; }
+
+    /* Spinner */
+    .rly-spinner {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px; height: 20px;
+      animation: rly-spin 0.8s linear infinite;
+    }
+    @keyframes rly-spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+    .rly-spinner circle { stroke: currentColor; stroke-opacity: 0.2; }
+    .rly-spinner path   { stroke: currentColor; }
+    .rly-btn.loading .rly-btn-text,
+    .rly-btn.loading .rly-btn-icon { opacity: 0; }
+
+    /* ── Input component ── */
+    .rly-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 240px;
+    }
+    .rly-field.disabled { opacity: 0.4; }
+    .rly-field label {
+      font-family: var(--font-family-body);
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      font-weight: 400;
+      color: var(--colors-fg-tertiary);
+    }
+    .rly-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 48px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--colors-border-tertiary);
+      background: var(--colors-bg-primary);
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .rly-input-wrap.hovered  { border-color: var(--colors-border-secondary); }
+    .rly-input-wrap.focused  { border-color: var(--colors-border-secondary); overflow: visible; }
+    .rly-input-wrap.error    { border-color: var(--colors-border-system-error-primary); }
+    .rly-input-wrap.success  { border-color: var(--colors-border-system-success-primary); }
+    .rly-input-wrap.disabled { border-color: var(--colors-border-primary); }
+
+    .rly-input-wrap input {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: var(--font-family-body);
+      font-size: var(--body-2-size);
+      line-height: var(--body-2-line-height);
+      font-weight: 400;
+      color: var(--colors-fg-primary);
+      pointer-events: none;
+    }
+    .rly-input-wrap input.placeholder { color: var(--colors-fg-secondary); }
+
+    /* Focus ring */
+    .rly-input-wrap.focused::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border: 2px solid var(--colors-border-focus);
+      border-radius: 13px;
+      pointer-events: none;
+    }
+
+    .rly-field .error-msg {
+      font-family: var(--font-family-body);
+      font-size: var(--body-4-size);
+      line-height: var(--body-4-line-height);
+      font-weight: 400;
+      color: var(--colors-fg-system-error-primary);
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>RLY Starter Kit — Design System</h1>
+    <p>Source: Figma Variables · Last exported 2026-03-24 · <code style="font-size:12px;color:var(--colors-fg-tertiary)">tokens/tokens.css</code></p>
+  </header>
+
+  <nav>
+    <a href="#component-button">Button</a>
+    <a href="#component-input">Input</a>
+    <a href="#colors-base">Base Colors</a>
+    <a href="#colors-neutral">Neutral</a>
+    <a href="#colors-brand">Brand</a>
+    <a href="#colors-semantic">Semantic</a>
+    <a href="#typography">Typography</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#radius">Radius</a>
+    <a href="#shadows">Shadows</a>
+    <a href="#icons">Icons</a>
+  </nav>
+
+  <!-- ════════════════════════════════════════════
+       COMPONENTS
+  ════════════════════════════════════════════ -->
+
+  <!-- ── BUTTON ── -->
+  <section id="component-button" class="component-section">
+    <div class="component-header">
+      <h2>Button</h2>
+      <div class="component-meta">
+        <span>file:</span> components/Button.tsx &nbsp;·&nbsp;
+        <span>variants:</span> type × state &nbsp;·&nbsp;
+        <span>sizes:</span> S
+      </div>
+    </div>
+
+    <!-- Primary -->
+    <div class="variant-group">
+      <div class="variant-group-label">Type — Primary</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary focused">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary hovered">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary pressed">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary disabled" disabled>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Disabled</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary loading">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <svg class="rly-spinner" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8" stroke-width="2"/>
+              <path d="M10 2a8 8 0 0 1 8 8" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="variant-label">Loading</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary -->
+    <div class="variant-group">
+      <div class="variant-group-label">Type — Secondary</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary focused">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary hovered">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary pressed">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary disabled" disabled>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Disabled</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary loading">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <svg class="rly-spinner" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8" stroke-width="2"/>
+              <path d="M10 2a8 8 0 0 1 8 8" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="variant-label">Loading</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tertiary -->
+    <div class="variant-group">
+      <div class="variant-group-label">Type — Tertiary</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary focused">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary hovered" style="color:var(--colors-fg-primary)">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary pressed">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary disabled" disabled>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Disabled</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary loading">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <svg class="rly-spinner" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8" stroke-width="2"/>
+              <path d="M10 2a8 8 0 0 1 8 8" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="variant-label">Loading</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icon variants -->
+    <div class="variant-group">
+      <div class="variant-group-label">Icon variants — Primary</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Both icons</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+          </button>
+          <div class="variant-label">Left only</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary">
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Right only</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary">
+            <span class="rly-btn-text">Button</span>
+          </button>
+          <div class="variant-label">No icons</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INPUT ── -->
+  <section id="component-input" class="component-section">
+    <div class="component-header">
+      <h2>Input</h2>
+      <div class="component-meta">
+        <span>file:</span> components/Input.tsx &nbsp;·&nbsp;
+        <span>variants:</span> state × filled
+      </div>
+    </div>
+
+    <!-- States: empty -->
+    <div class="variant-group">
+      <div class="variant-group-label">States — Empty (filled=false)</div>
+      <div class="variant-row" style="align-items:flex-start; flex-wrap:wrap;">
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap">
+              <input type="text" placeholder="Text input" class="placeholder" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap hovered">
+              <input type="text" placeholder="Text input" class="placeholder" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap focused">
+              <input type="text" placeholder="Text input" class="placeholder" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap error">
+              <input type="text" placeholder="Text input" class="placeholder" readonly />
+            </div>
+            <p class="error-msg">Error Message</p>
+          </div>
+          <div class="variant-label">Error</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap success">
+              <input type="text" placeholder="Text input" class="placeholder" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Success</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field disabled">
+            <label>Label</label>
+            <div class="rly-input-wrap disabled">
+              <input type="text" placeholder="Text input" class="placeholder" readonly disabled />
+            </div>
+          </div>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- States: filled -->
+    <div class="variant-group">
+      <div class="variant-group-label">States — Filled (filled=true)</div>
+      <div class="variant-row" style="align-items:flex-start; flex-wrap:wrap;">
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap">
+              <input type="text" value="Text input" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap hovered">
+              <input type="text" value="Text input" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap focused">
+              <input type="text" value="Text input" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap error">
+              <input type="text" value="Text input" readonly />
+            </div>
+            <p class="error-msg">Error Message</p>
+          </div>
+          <div class="variant-label">Error</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field">
+            <label>Label</label>
+            <div class="rly-input-wrap success">
+              <input type="text" value="Text input" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Success</div>
+        </div>
+        <div class="variant-cell" style="width:200px;">
+          <div class="rly-field disabled">
+            <label>Label</label>
+            <div class="rly-input-wrap disabled">
+              <input type="text" value="Text input" readonly disabled />
+            </div>
+          </div>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No label variant -->
+    <div class="variant-group">
+      <div class="variant-group-label">showLabel=false</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <div class="rly-field">
+            <div class="rly-input-wrap">
+              <input type="text" placeholder="Text input" class="placeholder" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <div class="rly-field">
+            <div class="rly-input-wrap error">
+              <input type="text" placeholder="Text input" class="placeholder" readonly />
+            </div>
+          </div>
+          <div class="variant-label">Error (no msg)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       TOKENS
+  ════════════════════════════════════════════ -->
+
+  <!-- ── BASE COLORS ── -->
+  <section id="colors-base">
+    <h2>Base Colors</h2>
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--colors-base-white);border-bottom:1px solid var(--colors-border-tertiary)"></div>
+        <div class="swatch-info"><div class="swatch-name">White</div><div class="swatch-hex">#ffffff</div><div class="swatch-var">--colors-base-white</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--colors-base-black)"></div>
+        <div class="swatch-info"><div class="swatch-name">Black</div><div class="swatch-hex">#000000</div><div class="swatch-var">--colors-base-black</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEUTRAL ── -->
+  <section id="colors-neutral">
+    <h2>Neutral</h2>
+    <div class="color-grid">
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-25)"></div><div class="swatch-info"><div class="swatch-name">Neutral 25</div><div class="swatch-hex">#f8f8f8</div><div class="swatch-var">--colors-neutral-25</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-50)"></div><div class="swatch-info"><div class="swatch-name">Neutral 50</div><div class="swatch-hex">#e9e9e9</div><div class="swatch-var">--colors-neutral-50</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-100)"></div><div class="swatch-info"><div class="swatch-name">Neutral 100</div><div class="swatch-hex">#d9d9d9</div><div class="swatch-var">--colors-neutral-100</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-200)"></div><div class="swatch-info"><div class="swatch-name">Neutral 200</div><div class="swatch-hex">#c6c6c6</div><div class="swatch-var">--colors-neutral-200</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-300)"></div><div class="swatch-info"><div class="swatch-name">Neutral 300</div><div class="swatch-hex">#a7a7a7</div><div class="swatch-var">--colors-neutral-300</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-400)"></div><div class="swatch-info"><div class="swatch-name">Neutral 400</div><div class="swatch-hex">#898989</div><div class="swatch-var">--colors-neutral-400</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-500)"></div><div class="swatch-info"><div class="swatch-name">Neutral 500</div><div class="swatch-hex">#595959</div><div class="swatch-var">--colors-neutral-500</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-600)"></div><div class="swatch-info"><div class="swatch-name">Neutral 600</div><div class="swatch-hex">#424242</div><div class="swatch-var">--colors-neutral-600</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-700)"></div><div class="swatch-info"><div class="swatch-name">Neutral 700</div><div class="swatch-hex">#343434</div><div class="swatch-var">--colors-neutral-700</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-800)"></div><div class="swatch-info"><div class="swatch-name">Neutral 800</div><div class="swatch-hex">#222222</div><div class="swatch-var">--colors-neutral-800</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-900)"></div><div class="swatch-info"><div class="swatch-name">Neutral 900</div><div class="swatch-hex">#111111</div><div class="swatch-var">--colors-neutral-900</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-neutral-950)"></div><div class="swatch-info"><div class="swatch-name">Neutral 950</div><div class="swatch-hex">#080808</div><div class="swatch-var">--colors-neutral-950</div></div></div>
+    </div>
+  </section>
+
+  <!-- ── BRAND ── -->
+  <section id="colors-brand">
+    <h2>Brand</h2>
+    <div class="color-grid">
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-50)"></div><div class="swatch-info"><div class="swatch-name">Brand 50</div><div class="swatch-hex">#edfff6</div><div class="swatch-var">--colors-brand-50</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-100)"></div><div class="swatch-info"><div class="swatch-name">Brand 100</div><div class="swatch-hex">#d5ffee</div><div class="swatch-var">--colors-brand-100</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-200)"></div><div class="swatch-info"><div class="swatch-name">Brand 200</div><div class="swatch-hex">#adffdd</div><div class="swatch-var">--colors-brand-200</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-300)"></div><div class="swatch-info"><div class="swatch-name">Brand 300</div><div class="swatch-hex">#68ffc3</div><div class="swatch-var">--colors-brand-300</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-400)"></div><div class="swatch-info"><div class="swatch-name">Brand 400</div><div class="swatch-hex">#1fffaf</div><div class="swatch-var">--colors-brand-400</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-500)"></div><div class="swatch-info"><div class="swatch-name">Brand 500 ★</div><div class="swatch-hex">#00ec88</div><div class="swatch-var">--colors-brand-500</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-600)"></div><div class="swatch-info"><div class="swatch-name">Brand 600</div><div class="swatch-hex">#00b867</div><div class="swatch-var">--colors-brand-600</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-700)"></div><div class="swatch-info"><div class="swatch-name">Brand 700</div><div class="swatch-hex">#008a52</div><div class="swatch-var">--colors-brand-700</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-800)"></div><div class="swatch-info"><div class="swatch-name">Brand 800</div><div class="swatch-hex">#006640</div><div class="swatch-var">--colors-brand-800</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-900)"></div><div class="swatch-info"><div class="swatch-name">Brand 900</div><div class="swatch-hex">#00472e</div><div class="swatch-var">--colors-brand-900</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-brand-950)"></div><div class="swatch-info"><div class="swatch-name">Brand 950</div><div class="swatch-hex">#00291b</div><div class="swatch-var">--colors-brand-950</div></div></div>
+    </div>
+  </section>
+
+  <!-- ── SEMANTIC COLORS ── -->
+  <section id="colors-semantic">
+    <h2>Semantic Colors</h2>
+
+    <p style="font-size:var(--body-3-size);color:var(--colors-fg-tertiary);margin-bottom:20px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;font-size:11px;">Foreground</p>
+    <div class="color-grid" style="margin-bottom:32px;">
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-primary)"></div><div class="swatch-info"><div class="swatch-name">FG Primary</div><div class="swatch-hex">#080808</div><div class="swatch-var">--colors-fg-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-secondary)"></div><div class="swatch-info"><div class="swatch-name">FG Secondary</div><div class="swatch-hex">#595959</div><div class="swatch-var">--colors-fg-secondary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-tertiary)"></div><div class="swatch-info"><div class="swatch-name">FG Tertiary</div><div class="swatch-hex">#898989</div><div class="swatch-var">--colors-fg-tertiary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-quaternary)"></div><div class="swatch-info"><div class="swatch-name">FG Quaternary</div><div class="swatch-hex">#a7a7a7</div><div class="swatch-var">--colors-fg-quaternary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-brand-primary)"></div><div class="swatch-info"><div class="swatch-name">FG Brand Primary</div><div class="swatch-hex">#00b867</div><div class="swatch-var">--colors-fg-brand-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-system-error-primary)"></div><div class="swatch-info"><div class="swatch-name">FG Error</div><div class="swatch-hex">#fd4710</div><div class="swatch-var">--colors-fg-system-error-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-system-success-primary)"></div><div class="swatch-info"><div class="swatch-name">FG Success</div><div class="swatch-hex">#01a355</div><div class="swatch-var">--colors-fg-system-success-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-system-warning-primary)"></div><div class="swatch-info"><div class="swatch-name">FG Warning</div><div class="swatch-hex">#eecb32</div><div class="swatch-var">--colors-fg-system-warning-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-fg-system-info-primary)"></div><div class="swatch-info"><div class="swatch-name">FG Info</div><div class="swatch-hex">#4369de</div><div class="swatch-var">--colors-fg-system-info-primary</div></div></div>
+    </div>
+
+    <p style="font-size:11px;color:var(--colors-fg-tertiary);margin-bottom:20px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Background</p>
+    <div class="color-grid" style="margin-bottom:32px;">
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-bg-primary);border-bottom:1px solid var(--colors-border-tertiary)"></div><div class="swatch-info"><div class="swatch-name">BG Primary</div><div class="swatch-hex">#ffffff</div><div class="swatch-var">--colors-bg-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-bg-tertiary)"></div><div class="swatch-info"><div class="swatch-name">BG Tertiary</div><div class="swatch-hex">#e9e9e9</div><div class="swatch-var">--colors-bg-tertiary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-bg-brand-primary)"></div><div class="swatch-info"><div class="swatch-name">BG Brand Primary</div><div class="swatch-hex">#00ec88</div><div class="swatch-var">--colors-bg-brand-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-bg-system-error-primary)"></div><div class="swatch-info"><div class="swatch-name">BG Error</div><div class="swatch-hex">#fd47100d</div><div class="swatch-var">--colors-bg-system-error-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-bg-system-success-primary)"></div><div class="swatch-info"><div class="swatch-name">BG Success</div><div class="swatch-hex">#0bfe8a0d</div><div class="swatch-var">--colors-bg-system-success-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-bg-system-warning-primary)"></div><div class="swatch-info"><div class="swatch-name">BG Warning</div><div class="swatch-hex">#eecb320d</div><div class="swatch-var">--colors-bg-system-warning-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-bg-system-info-primary)"></div><div class="swatch-info"><div class="swatch-name">BG Info</div><div class="swatch-hex">#0032c70d</div><div class="swatch-var">--colors-bg-system-info-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--utilities-bg-section-inverse)"></div><div class="swatch-info"><div class="swatch-name">BG Section Inverse</div><div class="swatch-hex">#121212</div><div class="swatch-var">--utilities-bg-section-inverse</div></div></div>
+    </div>
+
+    <p style="font-size:11px;color:var(--colors-fg-tertiary);margin-bottom:20px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Border</p>
+    <div class="color-grid">
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-primary)"></div><div class="swatch-info"><div class="swatch-name">Border Primary</div><div class="swatch-hex">#a7a7a7</div><div class="swatch-var">--colors-border-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-secondary)"></div><div class="swatch-info"><div class="swatch-name">Border Secondary</div><div class="swatch-hex">#c6c6c6</div><div class="swatch-var">--colors-border-secondary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-tertiary)"></div><div class="swatch-info"><div class="swatch-name">Border Tertiary</div><div class="swatch-hex">#e9e9e9</div><div class="swatch-var">--colors-border-tertiary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-focus)"></div><div class="swatch-info"><div class="swatch-name">Border Focus</div><div class="swatch-hex">#6388f7</div><div class="swatch-var">--colors-border-focus</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-brand-primary)"></div><div class="swatch-info"><div class="swatch-name">Border Brand</div><div class="swatch-hex">#00ec88</div><div class="swatch-var">--colors-border-brand-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-system-error-primary)"></div><div class="swatch-info"><div class="swatch-name">Border Error</div><div class="swatch-hex">#fd4710</div><div class="swatch-var">--colors-border-system-error-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-system-success-primary)"></div><div class="swatch-info"><div class="swatch-name">Border Success</div><div class="swatch-hex">#3efea2</div><div class="swatch-var">--colors-border-system-success-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-system-warning-primary)"></div><div class="swatch-info"><div class="swatch-name">Border Warning</div><div class="swatch-hex">#f3d659</div><div class="swatch-var">--colors-border-system-warning-primary</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:var(--colors-border-system-info-primary)"></div><div class="swatch-info"><div class="swatch-name">Border Info</div><div class="swatch-hex">#4369de</div><div class="swatch-var">--colors-border-system-info-primary</div></div></div>
+    </div>
+  </section>
+
+  <!-- ── TYPOGRAPHY ── -->
+  <section id="typography">
+    <h2>Typography</h2>
+
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Display 1</div><div class="type-details">116px / 116px · Regular</div></div>
+      <div class="type-preview" style="font-size:var(--display-1-size);line-height:var(--display-1-line-height);font-weight:400;font-family:var(--font-family-headings)">Aa</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Display 2</div><div class="type-details">72px / 72px · Regular</div></div>
+      <div class="type-preview" style="font-size:var(--display-2-size);line-height:var(--display-2-line-height);font-weight:400;font-family:var(--font-family-headings)">Aa</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Heading 1</div><div class="type-details">56px / 64px · Medium</div></div>
+      <div class="type-preview" style="font-size:var(--heading-1-size);line-height:var(--heading-1-line-height);font-weight:500">The quick brown fox</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Heading 2</div><div class="type-details">42px / 48px · Medium</div></div>
+      <div class="type-preview" style="font-size:var(--heading-2-size);line-height:var(--heading-2-line-height);font-weight:500">The quick brown fox</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Heading 3</div><div class="type-details">32px / 40px · Medium</div></div>
+      <div class="type-preview" style="font-size:var(--heading-3-size);line-height:var(--heading-3-line-height);font-weight:500">The quick brown fox jumps</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Heading 4</div><div class="type-details">24px / 28px · Medium</div></div>
+      <div class="type-preview" style="font-size:var(--heading-4-size);line-height:var(--heading-4-line-height);font-weight:500">The quick brown fox jumps over</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Heading 5</div><div class="type-details">20px / 24px · Medium</div></div>
+      <div class="type-preview" style="font-size:var(--heading-5-size);line-height:var(--heading-5-line-height);font-weight:500">The quick brown fox jumps over the lazy dog</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Body 1</div><div class="type-details">18px / 28px · Regular</div></div>
+      <div class="type-preview" style="font-size:var(--body-1-size);line-height:var(--body-1-line-height)">The quick brown fox jumps over the lazy dog</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Body 2</div><div class="type-details">16px / 24px · Regular</div></div>
+      <div class="type-preview" style="font-size:var(--body-2-size);line-height:var(--body-2-line-height)">The quick brown fox jumps over the lazy dog</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Body 3</div><div class="type-details">14px / 20px · Regular</div></div>
+      <div class="type-preview" style="font-size:var(--body-3-size);line-height:var(--body-3-line-height)">The quick brown fox jumps over the lazy dog</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Body 4</div><div class="type-details">12px / 18px · Regular</div></div>
+      <div class="type-preview" style="font-size:var(--body-4-size);line-height:var(--body-4-line-height)">The quick brown fox jumps over the lazy dog</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Button 1</div><div class="type-details">16px / 20px · Medium</div></div>
+      <div class="type-preview" style="font-size:var(--button-1-size);line-height:var(--button-1-line-height);font-weight:var(--button-1-weight)">Button Label</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Button 2</div><div class="type-details">14px / 16px · Medium</div></div>
+      <div class="type-preview" style="font-size:var(--button-2-size);line-height:var(--button-2-line-height);font-weight:var(--button-2-weight)">Button Label</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta"><div class="type-label">Label 6</div><div class="type-details">12px / 14px · Medium</div></div>
+      <div class="type-preview" style="font-size:var(--label-6-size);line-height:var(--label-6-line-height);font-weight:500;text-transform:uppercase;letter-spacing:0.06em">Label Text</div>
+    </div>
+  </section>
+
+  <!-- ── SPACING ── -->
+  <section id="spacing">
+    <h2>Spacing</h2>
+    <div class="spacing-list">
+      <div class="spacing-item">
+        <div class="spacing-bar" style="width:var(--spacing-4)"></div>
+        <div class="spacing-info">--spacing-4 · 16px</div>
+      </div>
+      <div class="spacing-item">
+        <div class="spacing-bar" style="width:var(--spacing-5)"></div>
+        <div class="spacing-info">--spacing-5 · 20px</div>
+      </div>
+      <div class="spacing-item">
+        <div class="spacing-bar" style="width:var(--spacing-6)"></div>
+        <div class="spacing-info">--spacing-6 · 24px</div>
+      </div>
+      <div class="spacing-item">
+        <div class="spacing-bar" style="width:var(--spacing-8)"></div>
+        <div class="spacing-info">--spacing-8 · 32px</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RADIUS ── -->
+  <section id="radius">
+    <h2>Border Radius</h2>
+    <div class="radius-grid">
+      <div class="radius-demo">
+        <div class="radius-box" style="border-radius:var(--radius-xs)"></div>
+        <div class="radius-label">--radius-xs<br/>4px</div>
+      </div>
+      <div class="radius-demo">
+        <div class="radius-box" style="border-radius:var(--radius-sm)"></div>
+        <div class="radius-label">--radius-sm<br/>8px</div>
+      </div>
+      <div class="radius-demo">
+        <div class="radius-box" style="border-radius:var(--radius-md)"></div>
+        <div class="radius-label">--radius-md<br/>12px</div>
+      </div>
+      <div class="radius-demo">
+        <div class="radius-box" style="border-radius:var(--radius-xl)"></div>
+        <div class="radius-label">--radius-xl<br/>24px</div>
+      </div>
+      <div class="radius-demo">
+        <div class="radius-box" style="border-radius:var(--radius-full)"></div>
+        <div class="radius-label">--radius-full<br/>9999px</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SHADOWS ── -->
+  <section id="shadows">
+    <h2>Shadows</h2>
+    <div class="shadow-grid">
+      <div class="shadow-demo">
+        <div class="shadow-box sm"></div>
+        <table class="token-table" style="width:140px">
+          <tr><td class="token-name">--shadow-sm</td></tr>
+          <tr><td class="token-value" style="font-size:10px">0 1px 2px + 0 1px 10px</td></tr>
+        </table>
+      </div>
+      <div class="shadow-demo">
+        <div class="shadow-box md"></div>
+        <table class="token-table" style="width:140px">
+          <tr><td class="token-name">--shadow-md</td></tr>
+          <tr><td class="token-value" style="font-size:10px">0 2px 8px + 0 4px 14px</td></tr>
+        </table>
+      </div>
+      <div class="shadow-demo">
+        <div class="shadow-box lg"></div>
+        <table class="token-table" style="width:140px">
+          <tr><td class="token-name">--shadow-lg</td></tr>
+          <tr><td class="token-value" style="font-size:10px">0 4px 6px + 0 12px 16px</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ICONS ── -->
+  <section id="icons">
+    <h2>Icon Tokens</h2>
+    <table class="token-table" style="margin-bottom:32px">
+      <thead><tr><th>Token</th><th>Value</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="token-name">--icon-size</td><td class="token-value">24px</td><td style="font-size:12px;color:var(--colors-fg-tertiary)">Default icon size</td></tr>
+        <tr><td class="token-name">--icon-stroke</td><td class="token-value">2</td><td style="font-size:12px;color:var(--colors-fg-tertiary)">Default stroke width</td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px;color:var(--colors-fg-tertiary);margin-bottom:16px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Icon Sets in Figma File</p>
+    <div class="icon-grid">
+      <div class="icon-chip"><div class="icon-dot">⚙️</div> General <span>search</span></div>
+      <div class="icon-chip"><div class="icon-dot">💬</div> Social <span>Discord, Facebook, Instagram, LinkedIn, Twitter/X, YouTube, TikTok, Farcaster, Google</span></div>
+      <div class="icon-chip"><div class="icon-dot">👛</div> Wallet <span>MetaMask, WalletConnect, Phantom, Keplr, Leap, Terra Station, Kado, Compass</span></div>
+    </div>
+  </section>
+
+</body>
+</html>
