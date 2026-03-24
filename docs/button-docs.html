@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <title>Button — Component Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────── */
+    :root {
+      --colors-bg-brand-primary: #00ec88;
+      --colors-bg-brand-secondary: #00b867;
+      --colors-bg-brand-tertiary: #008a52;
+      --colors-border-secondary: #c6c6c6;
+      --colors-border-primary: #a7a7a7;
+      --colors-border-focus: #6388f7;
+      --colors-border-tertiary: #e9e9e9;
+      --colors-fg-primary: #080808;
+      --colors-fg-secondary: #595959;
+      --colors-fg-tertiary: #898989;
+      --colors-fg-quaternary: #a7a7a7;
+      --colors-neutral-25: #f8f8f8;
+      --colors-neutral-50: #e9e9e9;
+      --radius-sm: 8px;
+      --radius-xs: 4px;
+      --radius-full: 9999px;
+      --button-2-size: 14px;
+      --button-2-line-height: 16px;
+      --button-2-weight: 500;
+    }
+
+    /* ─── Reset & Base ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: var(--colors-fg-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Page shell ────────────────────────────────────────── */
+    .page { width: 100%; }
+
+    /* ─── Header ────────────────────────────────────────────── */
+    .header {
+      background: #ffffff;
+      padding: 80px 80px 64px;
+      border-bottom: 1px solid var(--colors-neutral-50);
+    }
+    .header-category {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--colors-bg-brand-secondary);
+      margin-bottom: 24px;
+    }
+    .header-title {
+      font-size: 56px;
+      font-weight: 600;
+      color: var(--colors-fg-primary);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .header-summary {
+      font-size: 18px;
+      color: var(--colors-fg-secondary);
+      line-height: 1.5;
+      margin-bottom: 32px;
+      max-width: 680px;
+    }
+    .header-tags {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 12px;
+      border: 1px solid var(--colors-neutral-50);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--colors-fg-secondary);
+      background: #ffffff;
+      white-space: nowrap;
+    }
+
+    /* ─── Section layout ────────────────────────────────────── */
+    .section {
+      border-top: 1px solid var(--colors-neutral-50);
+      padding: 72px 80px;
+      display: flex;
+      gap: 80px;
+      align-items: flex-start;
+    }
+    .section-white { background: #ffffff; }
+    .section-gray  { background: var(--colors-neutral-25); }
+
+    .section-left {
+      width: 440px;
+      flex-shrink: 0;
+    }
+    .section-right {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .section-num {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--colors-fg-quaternary);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--colors-fg-primary);
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 15px;
+      color: var(--colors-fg-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .section-list {
+      list-style: none;
+    }
+    .section-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--colors-fg-secondary);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .section-list li::before {
+      content: "•";
+      color: var(--colors-bg-brand-secondary);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .section-list li strong {
+      color: var(--colors-fg-primary);
+    }
+    .section-list li code {
+      font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+      font-size: 12px;
+      background: var(--colors-neutral-50);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--colors-fg-primary);
+    }
+
+    /* ─── Button component classes ──────────────────────────── */
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      padding: 0 6px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: 500;
+      text-transform: capitalize;
+      white-space: nowrap;
+      gap: 0;
+      overflow: hidden;
+    }
+    .btn-text { padding: 0 6px; }
+    .btn-icon { display: flex; flex-shrink: 0; }
+
+    /* Primary */
+    .btn-p-default  { background: #00ec88; color: #080808; }
+    .btn-p-hovered  { background: #00b867; color: #080808; }
+    .btn-p-pressed  { background: #008a52; color: #080808; }
+    .btn-p-focused  { background: #00b867; color: #080808; overflow: visible; }
+    .btn-p-disabled { background: #00ec88; color: #080808; opacity: 0.4; cursor: not-allowed; }
+    .btn-p-loading  { background: #00ec88; color: #080808; }
+
+    /* Secondary */
+    .btn-s-default  { background: transparent; color: #080808; border: 1px solid #c6c6c6; }
+    .btn-s-hovered  { background: transparent; color: #080808; border: 1px solid #a7a7a7; }
+    .btn-s-pressed  { background: transparent; color: #080808; border: 1px solid #c6c6c6; }
+    .btn-s-focused  { background: transparent; color: #080808; border: 1px solid #a7a7a7; overflow: visible; }
+    .btn-s-disabled { background: transparent; color: #080808; border: 1px solid #c6c6c6; opacity: 0.4; cursor: not-allowed; }
+    .btn-s-loading  { background: transparent; color: #080808; border: 1px solid #c6c6c6; }
+
+    /* Tertiary */
+    .btn-t-default  { background: transparent; color: #595959; border: none; }
+    .btn-t-hovered  { background: transparent; color: #080808; border: none; }
+    .btn-t-pressed  { background: transparent; color: #595959; border: none; }
+    .btn-t-focused  { background: transparent; color: #080808; border: none; overflow: visible; }
+    .btn-t-disabled { background: transparent; color: #595959; border: none; opacity: 0.4; cursor: not-allowed; }
+    .btn-t-loading  { background: transparent; color: #595959; border: none; }
+
+    /* Focus ring */
+    .focus-ring {
+      position: absolute;
+      inset: -2px;
+      height: calc(100% + 4px);
+      border: 2px solid #6388f7;
+      border-radius: 10px;
+      pointer-events: none;
+    }
+    .focus-ring-secondary { inset: -3px; height: calc(100% + 6px); }
+
+    /* Spinner */
+    .spinner {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    .loading .btn-text,
+    .loading .btn-icon { opacity: 0; }
+
+    /* ─── Section 01 – Anatomy ──────────────────────────────── */
+    .anatomy-diagram {
+      background: #ffffff;
+      border: 1px solid var(--colors-neutral-50);
+      border-radius: 12px;
+      padding: 48px 40px 40px;
+    }
+    .anatomy-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--colors-fg-quaternary);
+      margin-bottom: 32px;
+    }
+    .anatomy-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Button + annotation lines */
+    .anatomy-annotated {
+      position: relative;
+      padding: 60px 0 80px;
+      display: flex;
+      justify-content: center;
+    }
+    .anatomy-btn-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+    /* top annotations */
+    .ann-top {
+      position: absolute;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+    .ann-line-down {
+      width: 1px;
+      background: #c6c6c6;
+      border-left: 1px dashed #c6c6c6;
+      flex: 1;
+    }
+    .ann-label {
+      font-size: 10px;
+      font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+      color: var(--colors-fg-secondary);
+      white-space: nowrap;
+      background: #fff;
+      padding: 2px 6px;
+      border: 1px solid var(--colors-neutral-50);
+      border-radius: 4px;
+    }
+    /* Dimension diagrams */
+    .dim-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .dim-card {
+      background: var(--colors-neutral-25);
+      border: 1px solid var(--colors-neutral-50);
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 160px;
+    }
+    .dim-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--colors-fg-quaternary);
+    }
+    .dim-value {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--colors-fg-primary);
+    }
+    .dim-sub {
+      font-size: 12px;
+      color: var(--colors-fg-secondary);
+    }
+    /* Anatomy annotation table */
+    .anatomy-parts {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--colors-neutral-50);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .anatomy-part-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--colors-neutral-50);
+      background: #fff;
+    }
+    .anatomy-part-row:last-child { border-bottom: none; }
+    .anatomy-part-row:nth-child(even) { background: var(--colors-neutral-25); }
+    .anatomy-part-num {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+      color: var(--colors-fg-quaternary);
+      min-width: 20px;
+      padding-top: 1px;
+    }
+    .anatomy-part-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--colors-fg-primary);
+      min-width: 110px;
+    }
+    .anatomy-part-desc {
+      font-size: 13px;
+      color: var(--colors-fg-secondary);
+      line-height: 1.5;
+    }
+
+    /* ─── Section 02 – Variants ─────────────────────────────── */
+    .variants-grid {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .variant-card {
+      flex: 1;
+      min-width: 160px;
+      background: #ffffff;
+      border: 1px solid var(--colors-neutral-50);
+      border-radius: 12px;
+      padding: 32px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .variant-name {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--colors-fg-quaternary);
+    }
+    .variant-desc {
+      font-size: 13px;
+      color: var(--colors-fg-secondary);
+      line-height: 1.5;
+    }
+
+    /* ─── Section 03 – Sizes ────────────────────────────────── */
+    .sizes-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .size-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .size-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--colors-fg-quaternary);
+      min-width: 60px;
+    }
+    .size-demo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+    .size-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px dashed #c6c6c6;
+      border-radius: 8px;
+      color: var(--colors-fg-quaternary);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .size-dim-tag {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      background: var(--colors-neutral-50);
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+      color: var(--colors-fg-secondary);
+      white-space: nowrap;
+    }
+
+    /* ─── Section 04 – States grid ──────────────────────────── */
+    .states-grid {
+      display: grid;
+      grid-template-columns: 90px repeat(6, 1fr);
+      gap: 0;
+      border: 1px solid var(--colors-neutral-50);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    .states-header-row,
+    .states-row {
+      display: contents;
+    }
+    .states-cell {
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--colors-neutral-50);
+      border-right: 1px solid var(--colors-neutral-50);
+    }
+    .states-cell:last-child { border-right: none; }
+    .states-row:last-child .states-cell { border-bottom: none; }
+    .states-head {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--colors-fg-quaternary);
+      text-align: center;
+      padding: 12px 8px;
+      background: var(--colors-neutral-25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--colors-neutral-50);
+      border-right: 1px solid var(--colors-neutral-50);
+    }
+    .states-head:last-child { border-right: none; }
+    .states-variant-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--colors-fg-secondary);
+      writing-mode: horizontal-tb;
+      background: var(--colors-neutral-25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 10px;
+      border-right: 1px solid var(--colors-neutral-50);
+      border-bottom: 1px solid var(--colors-neutral-50);
+    }
+    .states-row:last-child .states-variant-label { border-bottom: none; }
+    .state-name-label {
+      font-size: 10px;
+      color: var(--colors-fg-tertiary);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* ─── Section 05 – Themes ───────────────────────────────── */
+    .themes-panels {
+      display: flex;
+      gap: 24px;
+    }
+    .theme-panel {
+      flex: 1;
+      border-radius: 12px;
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border: 1px solid var(--colors-neutral-50);
+    }
+    .theme-panel-dark {
+      background: #121212;
+      border-color: #2a2a2a;
+    }
+    .theme-panel-light {
+      background: #ffffff;
+    }
+    .theme-panel-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .theme-panel-label-light { color: var(--colors-fg-quaternary); }
+    .theme-panel-label-dark  { color: #666; }
+    .theme-panel-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .theme-panel-title-light { color: var(--colors-fg-primary); }
+    .theme-panel-title-dark  { color: #888; }
+    .dark-pending {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .dark-btn-placeholder {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1.5px dashed #444;
+      color: #555;
+      font-size: 13px;
+      font-weight: 500;
+      gap: 6px;
+    }
+    .dark-pending-note {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+    .theme-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 20px;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .theme-badge-ready {
+      background: #e6faf2;
+      color: #00874a;
+    }
+    .theme-badge-pending {
+      background: #2a2a2a;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ════════════════════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════════════════════ -->
+  <header class="header">
+    <div class="header-category">◆ COMPONENT · INTERACTIVE</div>
+    <h1 class="header-title">Button</h1>
+    <p class="header-summary">A clickable element that triggers an action, available in 3 types × 6 states with optional icon slots and loading state.</p>
+    <div class="header-tags">
+      <span class="tag-pill">3 Types</span>
+      <span class="tag-pill">6 States</span>
+      <span class="tag-pill">1 Size (S)</span>
+      <span class="tag-pill">Icon Slots</span>
+      <span class="tag-pill">Loading State</span>
+      <span class="tag-pill">Focus Ring</span>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════════
+       01 — ANATOMY  (white)
+  ════════════════════════════════════════════════════════ -->
+  <section class="section section-white">
+    <div class="section-left">
+      <div class="section-num">01</div>
+      <h2 class="section-title">Anatomy</h2>
+      <p class="section-desc">The Button is composed of 7 distinct parts. The container holds up to 5 visible elements — two icon slots, a text wrapper with label, plus two overlay elements (focus ring and spinner) that appear conditionally.</p>
+      <ul class="section-list">
+        <li><span><strong>Container</strong> — <code>&lt;button&gt;</code> element. 32px height, 6px horizontal padding, 8px border-radius. Background and border vary by type and state.</span></li>
+        <li><span><strong>Left Icon slot</strong> — 16×16px optional slot. Shown when <code>showLeftIcon=true</code> and state≠Loading. Defaults to Plus icon.</span></li>
+        <li><span><strong>Text Wrapper</strong> — flex row with 6px horizontal padding centering the label.</span></li>
+        <li><span><strong>Label</strong> — 14px/16px Medium text. Capitalized. Color: fg-primary for Primary/Secondary, fg-secondary for Tertiary. Hidden (opacity:0) during Loading.</span></li>
+        <li><span><strong>Right Icon slot</strong> — 16×16px optional slot. Shown when <code>showRightIcon=true</code> and state≠Loading. Defaults to ChevronRight icon.</span></li>
+        <li><span><strong>Focus Ring</strong> — absolute overlay, 2px border in #6388f7, border-radius 10px. Visible only in Focused state. Inset: -2px (Primary/Tertiary), -3px (Secondary).</span></li>
+        <li><span><strong>Spinner</strong> — absolute centered 20×20px SVG. Visible only in Loading state. Replaces icon+label visually.</span></li>
+      </ul>
+    </div>
+
+    <div class="section-right">
+      <div class="anatomy-diagram">
+        <div class="anatomy-title">Component breakdown</div>
+        <div class="anatomy-visual">
+
+          <!-- Live button with annotation markers -->
+          <div style="position:relative; padding: 56px 0 56px; display:flex; justify-content:center; align-items:center;">
+
+            <!-- Rendered button -->
+            <div style="position:relative; display:inline-flex;">
+              <button class="btn btn-p-default" style="pointer-events:none;">
+                <span class="btn-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Button</span>
+                <span class="btn-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
+
+              <!-- annotation: Container -->
+              <div style="position:absolute; inset:-14px; border:1.5px dashed #6388f7; border-radius:12px; pointer-events:none;"></div>
+
+              <!-- annotation: Left icon bracket -->
+              <div style="position:absolute; left:6px; top:50%; transform:translateY(-50%); width:16px; height:16px; border:1.5px dashed #e06f00; border-radius:3px; pointer-events:none;"></div>
+
+              <!-- annotation: Right icon bracket -->
+              <div style="position:absolute; right:6px; top:50%; transform:translateY(-50%); width:16px; height:16px; border:1.5px dashed #e06f00; border-radius:3px; pointer-events:none;"></div>
+
+              <!-- annotation: text wrapper bracket (center area) -->
+              <div style="position:absolute; left:28px; right:28px; top:4px; bottom:4px; border:1.5px dashed #9b59b6; border-radius:3px; pointer-events:none;"></div>
+            </div>
+
+            <!-- Legend for bracket colors -->
+            <div style="position:absolute; right:0; top:0; display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+              <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--colors-fg-secondary);">
+                <span style="width:14px; height:2px; background:#6388f7; display:inline-block;"></span>Container
+              </div>
+              <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--colors-fg-secondary);">
+                <span style="width:14px; height:2px; background:#e06f00; display:inline-block;"></span>Icon slots
+              </div>
+              <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--colors-fg-secondary);">
+                <span style="width:14px; height:2px; background:#9b59b6; display:inline-block;"></span>Text wrapper
+              </div>
+            </div>
+          </div>
+
+          <!-- Parts table -->
+          <div class="anatomy-parts">
+            <div class="anatomy-part-row">
+              <span class="anatomy-part-num">1</span>
+              <span class="anatomy-part-name">Container</span>
+              <span class="anatomy-part-desc">h:32px · px:6px · radius:8px · inline-flex · overflow:hidden</span>
+            </div>
+            <div class="anatomy-part-row">
+              <span class="anatomy-part-num">2</span>
+              <span class="anatomy-part-name">Left Icon slot</span>
+              <span class="anatomy-part-desc">16×16px · optional via <code>showLeftIcon</code> · hidden during Loading</span>
+            </div>
+            <div class="anatomy-part-row">
+              <span class="anatomy-part-num">3</span>
+              <span class="anatomy-part-name">Text Wrapper</span>
+              <span class="anatomy-part-desc">px:6px · inline-flex · centers label horizontally</span>
+            </div>
+            <div class="anatomy-part-row">
+              <span class="anatomy-part-num">4</span>
+              <span class="anatomy-part-name">Label</span>
+              <span class="anatomy-part-desc">14px/16px weight:500 · capitalize · opacity:0 during Loading</span>
+            </div>
+            <div class="anatomy-part-row">
+              <span class="anatomy-part-num">5</span>
+              <span class="anatomy-part-name">Right Icon slot</span>
+              <span class="anatomy-part-desc">16×16px · optional via <code>showRightIcon</code> · hidden during Loading</span>
+            </div>
+            <div class="anatomy-part-row">
+              <span class="anatomy-part-num">6</span>
+              <span class="anatomy-part-name">Focus Ring</span>
+              <span class="anatomy-part-desc">absolute · 2px border #6388f7 · radius:10px · inset:-2px (−3px for Secondary) · Focused state only</span>
+            </div>
+            <div class="anatomy-part-row">
+              <span class="anatomy-part-num">7</span>
+              <span class="anatomy-part-name">Spinner</span>
+              <span class="anatomy-part-desc">absolute · centered · 20×20px · 0.8s spin animation · Loading state only</span>
+            </div>
+          </div>
+
+          <!-- Dimension callouts -->
+          <div class="dim-row">
+            <div class="dim-card">
+              <span class="dim-label">Height</span>
+              <span class="dim-value">32px</span>
+              <span class="dim-sub">Fixed, size S</span>
+            </div>
+            <div class="dim-card">
+              <span class="dim-label">H. Padding</span>
+              <span class="dim-value">6px</span>
+              <span class="dim-sub">Container sides</span>
+            </div>
+            <div class="dim-card">
+              <span class="dim-label">Text Padding</span>
+              <span class="dim-value">6px</span>
+              <span class="dim-sub">Text wrapper sides</span>
+            </div>
+            <div class="dim-card">
+              <span class="dim-label">Border Radius</span>
+              <span class="dim-value">8px</span>
+              <span class="dim-sub">Container</span>
+            </div>
+            <div class="dim-card">
+              <span class="dim-label">Icon size</span>
+              <span class="dim-value">16px</span>
+              <span class="dim-sub">Width &amp; height</span>
+            </div>
+          </div>
+
+        </div><!-- /.anatomy-visual -->
+      </div><!-- /.anatomy-diagram -->
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       02 — VARIANTS & STYLE  (gray)
+  ════════════════════════════════════════════════════════ -->
+  <section class="section section-gray">
+    <div class="section-left">
+      <div class="section-num">02</div>
+      <h2 class="section-title">Variants &amp; Style</h2>
+      <p class="section-desc">Three visual variants establish a clear action hierarchy. Primary draws maximum attention, Secondary provides a contained alternative, and Tertiary is the lowest-emphasis option.</p>
+      <ul class="section-list">
+        <li><span><strong>Primary</strong> — Filled style. Solid brand-green background (<code>bg-brand-primary</code>). Use for the main call-to-action on a screen. Maximum visual weight.</span></li>
+        <li><span><strong>Secondary</strong> — Outlined style. Transparent background with a 1px border (<code>border-secondary</code>). Use as supporting action alongside a Primary button. Medium visual weight.</span></li>
+        <li><span><strong>Tertiary</strong> — Ghost/Transparent style. No background, no border. Text only (+ icons). Use for low-priority or utility actions. Minimum visual weight.</span></li>
+      </ul>
+    </div>
+
+    <div class="section-right">
+      <div class="variants-grid">
+        <!-- Primary -->
+        <div class="variant-card">
+          <span class="variant-name">Primary</span>
+          <button class="btn btn-p-default" style="pointer-events:none;">
+            <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="btn-text">Button</span>
+            <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <p class="variant-desc">Solid brand-green fill. Maximum visual weight. Primary CTA.</p>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="width:14px; height:14px; border-radius:3px; background:#00ec88; display:inline-block; flex-shrink:0;"></span>
+              <span style="font-size:12px; font-family:monospace; color:var(--colors-fg-secondary);">bg #00ec88 (default)</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="width:14px; height:14px; border-radius:3px; background:#00b867; display:inline-block; flex-shrink:0;"></span>
+              <span style="font-size:12px; font-family:monospace; color:var(--colors-fg-secondary);">bg #00b867 (hover)</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="width:14px; height:14px; border-radius:3px; background:#008a52; display:inline-block; flex-shrink:0;"></span>
+              <span style="font-size:12px; font-family:monospace; color:var(--colors-fg-secondary);">bg #008a52 (press)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary -->
+        <div class="variant-card">
+          <span class="variant-name">Secondary</span>
+          <button class="btn btn-s-default" style="pointer-events:none;">
+            <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="btn-text">Button</span>
+            <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <p class="variant-desc">Transparent fill with 1px border. Medium visual weight. Supporting action.</p>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="width:14px; height:14px; border-radius:3px; background:transparent; border:1.5px solid #c6c6c6; display:inline-block; flex-shrink:0;"></span>
+              <span style="font-size:12px; font-family:monospace; color:var(--colors-fg-secondary);">border #c6c6c6 (default)</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="width:14px; height:14px; border-radius:3px; background:transparent; border:1.5px solid #a7a7a7; display:inline-block; flex-shrink:0;"></span>
+              <span style="font-size:12px; font-family:monospace; color:var(--colors-fg-secondary);">border #a7a7a7 (hover)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tertiary -->
+        <div class="variant-card">
+          <span class="variant-name">Tertiary</span>
+          <button class="btn btn-t-default" style="pointer-events:none;">
+            <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="btn-text">Button</span>
+            <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <p class="variant-desc">No fill, no border. Minimum visual weight. Utility / low-priority actions.</p>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="width:14px; height:14px; border-radius:3px; background:#595959; display:inline-block; flex-shrink:0;"></span>
+              <span style="font-size:12px; font-family:monospace; color:var(--colors-fg-secondary);">text #595959 (default)</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="width:14px; height:14px; border-radius:3px; background:#080808; display:inline-block; flex-shrink:0;"></span>
+              <span style="font-size:12px; font-family:monospace; color:var(--colors-fg-secondary);">text #080808 (hover)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       03 — SIZES  (white)
+  ════════════════════════════════════════════════════════ -->
+  <section class="section section-white">
+    <div class="section-left">
+      <div class="section-num">03</div>
+      <h2 class="section-title">Sizes</h2>
+      <p class="section-desc">Currently one size is implemented. Additional sizes are planned for future releases to support more layout contexts.</p>
+      <ul class="section-list">
+        <li><span><strong>S (implemented)</strong> — Height: 32px · Padding: 6px · Icon: 16px · Font: 14px/16px Medium · Border-radius: 8px</span></li>
+        <li><span><strong>M (planned)</strong> — Height: 40px · Font: 16px/20px Medium · Not yet implemented.</span></li>
+        <li><span><strong>L (planned)</strong> — Height: 48px · Font: 16px/20px Medium · Not yet implemented.</span></li>
+      </ul>
+    </div>
+
+    <div class="section-right">
+      <div class="sizes-grid">
+        <!-- S — implemented -->
+        <div class="size-row">
+          <span class="size-label">S</span>
+          <div class="size-demo">
+            <button class="btn btn-p-default" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Button</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="size-dim-tag">h: 32px</span>
+            <span class="size-dim-tag">px: 6px</span>
+            <span class="size-dim-tag">icon: 16px</span>
+            <span class="size-dim-tag">font: 14/16px</span>
+            <span style="display:inline-flex; align-items:center; height:20px; padding:0 8px; background:#e6faf2; border-radius:999px; font-size:10px; font-weight:600; color:#00874a; text-transform:uppercase; letter-spacing:0.06em;">Implemented</span>
+          </div>
+        </div>
+
+        <!-- M — planned -->
+        <div class="size-row">
+          <span class="size-label" style="color:var(--colors-fg-quaternary);">M</span>
+          <div class="size-demo">
+            <div class="size-placeholder" style="height:40px; width:130px; font-size:12px; color:var(--colors-fg-quaternary);">
+              Planned
+            </div>
+            <span class="size-dim-tag">h: 40px</span>
+            <span class="size-dim-tag">font: 16/20px</span>
+            <span style="display:inline-flex; align-items:center; height:20px; padding:0 8px; background:var(--colors-neutral-50); border-radius:999px; font-size:10px; font-weight:600; color:var(--colors-fg-quaternary); text-transform:uppercase; letter-spacing:0.06em;">Planned</span>
+          </div>
+        </div>
+
+        <!-- L — planned -->
+        <div class="size-row">
+          <span class="size-label" style="color:var(--colors-fg-quaternary);">L</span>
+          <div class="size-demo">
+            <div class="size-placeholder" style="height:48px; width:140px; font-size:12px; color:var(--colors-fg-quaternary);">
+              Planned
+            </div>
+            <span class="size-dim-tag">h: 48px</span>
+            <span class="size-dim-tag">font: 16/20px</span>
+            <span style="display:inline-flex; align-items:center; height:20px; padding:0 8px; background:var(--colors-neutral-50); border-radius:999px; font-size:10px; font-weight:600; color:var(--colors-fg-quaternary); text-transform:uppercase; letter-spacing:0.06em;">Planned</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       04 — STATES  (gray)
+  ════════════════════════════════════════════════════════ -->
+  <section class="section section-gray">
+    <div class="section-left">
+      <div class="section-num">04</div>
+      <h2 class="section-title">States</h2>
+      <p class="section-desc">The component responds to six interaction and system states. Every state applies to all three variants, yielding 18 distinct combinations.</p>
+      <ul class="section-list">
+        <li><span><strong>Default</strong> — Rest state. Full opacity. No ring.</span></li>
+        <li><span><strong>Hovered</strong> — Cursor over button. Darker background (Primary) or darker border (Secondary). Tertiary text becomes fg-primary.</span></li>
+        <li><span><strong>Pressed</strong> — Active/click. Primary uses darkest bg (#008a52). Secondary border unchanged.</span></li>
+        <li><span><strong>Focused</strong> — Keyboard focus. A 2px focus ring in #6388f7 appears outside the button. Styling same as Hovered otherwise.</span></li>
+        <li><span><strong>Disabled</strong> — Not interactive. Opacity 0.4. Cursor: not-allowed. No hover effects.</span></li>
+        <li><span><strong>Loading</strong> — Async action in progress. Spinner replaces label and icons. Button retains its type styling.</span></li>
+      </ul>
+    </div>
+
+    <div class="section-right">
+      <div class="states-grid">
+
+        <!-- Header row -->
+        <div class="states-header-row">
+          <div class="states-head" style="background:var(--colors-neutral-50);">&nbsp;</div>
+          <div class="states-head">Default</div>
+          <div class="states-head">Hovered</div>
+          <div class="states-head">Pressed</div>
+          <div class="states-head">Focused</div>
+          <div class="states-head">Disabled</div>
+          <div class="states-head">Loading</div>
+        </div>
+
+        <!-- Row 1: Primary -->
+        <div class="states-row">
+          <div class="states-variant-label">Primary</div>
+
+          <!-- Primary Default -->
+          <div class="states-cell">
+            <button class="btn btn-p-default" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Default</span>
+          </div>
+
+          <!-- Primary Hovered -->
+          <div class="states-cell">
+            <button class="btn btn-p-hovered" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Hovered</span>
+          </div>
+
+          <!-- Primary Pressed -->
+          <div class="states-cell">
+            <button class="btn btn-p-pressed" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Pressed</span>
+          </div>
+
+          <!-- Primary Focused -->
+          <div class="states-cell" style="overflow:visible;">
+            <div style="padding:6px; overflow:visible;">
+              <button class="btn btn-p-focused" style="pointer-events:none;">
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="btn-text">Label</span>
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="focus-ring"></div>
+              </button>
+            </div>
+            <span class="state-name-label">Focused</span>
+          </div>
+
+          <!-- Primary Disabled -->
+          <div class="states-cell">
+            <button class="btn btn-p-disabled" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Disabled</span>
+          </div>
+
+          <!-- Primary Loading -->
+          <div class="states-cell">
+            <button class="btn btn-p-loading loading" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <svg class="spinner" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-opacity="0.2" stroke-width="2"/><path d="M10 2a8 8 0 0 1 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <span class="state-name-label">Loading</span>
+          </div>
+        </div><!-- /Primary row -->
+
+        <!-- Row 2: Secondary -->
+        <div class="states-row">
+          <div class="states-variant-label">Secondary</div>
+
+          <!-- Secondary Default -->
+          <div class="states-cell">
+            <button class="btn btn-s-default" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Default</span>
+          </div>
+
+          <!-- Secondary Hovered -->
+          <div class="states-cell">
+            <button class="btn btn-s-hovered" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Hovered</span>
+          </div>
+
+          <!-- Secondary Pressed -->
+          <div class="states-cell">
+            <button class="btn btn-s-pressed" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Pressed</span>
+          </div>
+
+          <!-- Secondary Focused -->
+          <div class="states-cell" style="overflow:visible;">
+            <div style="padding:6px; overflow:visible;">
+              <button class="btn btn-s-focused" style="pointer-events:none;">
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="btn-text">Label</span>
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="focus-ring focus-ring-secondary"></div>
+              </button>
+            </div>
+            <span class="state-name-label">Focused</span>
+          </div>
+
+          <!-- Secondary Disabled -->
+          <div class="states-cell">
+            <button class="btn btn-s-disabled" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Disabled</span>
+          </div>
+
+          <!-- Secondary Loading -->
+          <div class="states-cell">
+            <button class="btn btn-s-loading loading" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <svg class="spinner" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-opacity="0.2" stroke-width="2"/><path d="M10 2a8 8 0 0 1 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <span class="state-name-label">Loading</span>
+          </div>
+        </div><!-- /Secondary row -->
+
+        <!-- Row 3: Tertiary -->
+        <div class="states-row">
+          <div class="states-variant-label">Tertiary</div>
+
+          <!-- Tertiary Default -->
+          <div class="states-cell">
+            <button class="btn btn-t-default" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Default</span>
+          </div>
+
+          <!-- Tertiary Hovered -->
+          <div class="states-cell">
+            <button class="btn btn-t-hovered" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Hovered</span>
+          </div>
+
+          <!-- Tertiary Pressed -->
+          <div class="states-cell">
+            <button class="btn btn-t-pressed" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Pressed</span>
+          </div>
+
+          <!-- Tertiary Focused -->
+          <div class="states-cell" style="overflow:visible;">
+            <div style="padding:6px; overflow:visible;">
+              <button class="btn btn-t-focused" style="pointer-events:none;">
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="btn-text">Label</span>
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div class="focus-ring"></div>
+              </button>
+            </div>
+            <span class="state-name-label">Focused</span>
+          </div>
+
+          <!-- Tertiary Disabled -->
+          <div class="states-cell">
+            <button class="btn btn-t-disabled" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+            <span class="state-name-label">Disabled</span>
+          </div>
+
+          <!-- Tertiary Loading -->
+          <div class="states-cell">
+            <button class="btn btn-t-loading loading" style="pointer-events:none;">
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+              <span class="btn-text">Label</span>
+              <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <svg class="spinner" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-opacity="0.2" stroke-width="2"/><path d="M10 2a8 8 0 0 1 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <span class="state-name-label">Loading</span>
+          </div>
+        </div><!-- /Tertiary row -->
+
+      </div><!-- /.states-grid -->
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       05 — THEMES  (white)
+  ════════════════════════════════════════════════════════ -->
+  <section class="section section-white">
+    <div class="section-left">
+      <div class="section-num">05</div>
+      <h2 class="section-title">Themes</h2>
+      <p class="section-desc">Light mode is fully implemented. Dark mode is not yet available — the token system does not define separate dark-mode values in <code style="font-size:13px; background:var(--colors-neutral-50); padding:1px 5px; border-radius:3px;">tokens.css</code>.</p>
+      <ul class="section-list">
+        <li><span><strong>Light</strong> — Implemented. Default theme. White/neutral backgrounds, brand-green accents, near-black text.</span></li>
+        <li><span><strong>Dark</strong> — Not implemented. No dark-mode CSS variables are defined in the current token set. All components will inherit light-mode values.</span></li>
+      </ul>
+    </div>
+
+    <div class="section-right">
+      <div class="themes-panels">
+
+        <!-- Light panel -->
+        <div class="theme-panel theme-panel-light">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="theme-panel-label theme-panel-label-light">Theme</span>
+            <span class="theme-badge theme-badge-ready">Live</span>
+          </div>
+          <div class="theme-panel-title theme-panel-title-light">Light Mode</div>
+          <button class="btn btn-p-default" style="pointer-events:none;">
+            <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="btn-text">Button</span>
+            <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <p style="font-size:13px; color:var(--colors-fg-secondary); line-height:1.5;">White/neutral backgrounds, brand-green accent, near-black text. Fully specified token set.</p>
+        </div>
+
+        <!-- Dark panel -->
+        <div class="theme-panel theme-panel-dark">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="theme-panel-label theme-panel-label-dark">Theme</span>
+            <span class="theme-badge theme-badge-pending">Pending</span>
+          </div>
+          <div class="theme-panel-title theme-panel-title-dark">Dark Mode</div>
+          <div class="dark-pending">
+            <div class="dark-btn-placeholder">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Button
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="dark-pending-note">Not implemented. No dark-mode CSS variables are defined in the current token set. Components will fall back to light-mode styles.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div><!-- /.page -->
+</body>
+</html>
