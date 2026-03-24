@@ -482,6 +482,277 @@
       color: var(--colors-fg-system-error-primary);
     }
 
+    /* ── Icon Button ── */
+    .rly-icon-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      outline: none;
+      overflow: hidden;
+      transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+    }
+    .rly-icon-btn.focused { overflow: visible; }
+    .rly-icon-btn.focused::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      height: 36px;
+      border: 2px solid var(--colors-border-focus);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+    /* Primary */
+    .rly-icon-btn-primary           { background: var(--colors-bg-brand-primary); }
+    .rly-icon-btn-primary.hovered   { background: var(--colors-bg-brand-secondary); }
+    .rly-icon-btn-primary.pressed   { background: var(--colors-bg-brand-tertiary); }
+    .rly-icon-btn-primary.focused   { background: var(--colors-bg-brand-secondary); }
+    .rly-icon-btn-primary.disabled  { background: var(--colors-bg-brand-primary); opacity: 0.4; cursor: not-allowed; }
+    /* Secondary */
+    .rly-icon-btn-secondary         { background: transparent; border: 1px solid var(--colors-border-secondary); }
+    .rly-icon-btn-secondary.hovered { border-color: var(--colors-border-primary); }
+    .rly-icon-btn-secondary.focused { border-color: var(--colors-border-primary); }
+    .rly-icon-btn-secondary.focused::after { inset: -3px; }
+    .rly-icon-btn-secondary.disabled { border-color: var(--colors-border-secondary); opacity: 0.4; cursor: not-allowed; }
+    /* Tertiary */
+    .rly-icon-btn-tertiary          { background: transparent; }
+    .rly-icon-btn-tertiary.disabled { opacity: 0.4; cursor: not-allowed; }
+    /* Icon colors */
+    .rly-icon-btn-primary svg path,
+    .rly-icon-btn-secondary svg path { stroke: var(--colors-fg-primary); }
+    .rly-icon-btn-tertiary svg path  { stroke: var(--colors-fg-secondary); }
+    .rly-icon-btn-tertiary.hovered svg path,
+    .rly-icon-btn-tertiary.focused svg path { stroke: var(--colors-fg-primary); }
+
+    /* ── Link Button ── */
+    .rly-link-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 4px;
+      background: none;
+      border: none;
+      border-bottom: 1px dashed var(--colors-fg-brand-primary);
+      cursor: pointer;
+      overflow: visible;
+      font-family: var(--font-family-body);
+      font-weight: 400;
+      color: var(--colors-fg-brand-primary);
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .rly-link-btn.hovered, .rly-link-btn.focused {
+      color: var(--colors-fg-brand-secondary);
+      border-bottom-color: var(--colors-fg-brand-secondary);
+    }
+    .rly-link-btn.pressed {
+      color: var(--colors-fg-brand-tertiary);
+      border-bottom-color: var(--colors-fg-brand-tertiary);
+    }
+    .rly-link-btn.disabled { opacity: 0.4; cursor: not-allowed; }
+    .rly-link-btn.focused::after {
+      content: '';
+      position: absolute;
+      left: -2px; right: -2px;
+      top: 50%; transform: translateY(-50%);
+      border: 2px solid var(--colors-border-focus);
+      border-radius: var(--radius-xs);
+      pointer-events: none;
+    }
+    .rly-link-btn.size-l  { font-size: var(--body-1-size); line-height: var(--body-1-line-height); }
+    .rly-link-btn.size-l.focused::after  { height: 32px; }
+    .rly-link-btn.size-m  { font-size: var(--body-2-size); line-height: var(--body-2-line-height); }
+    .rly-link-btn.size-m.focused::after  { height: 28px; }
+    .rly-link-btn.size-s  { font-size: var(--body-3-size); line-height: var(--body-3-line-height); }
+    .rly-link-btn.size-s.focused::after  { height: 24px; }
+    .rly-link-btn.size-xs { font-size: var(--body-4-size); line-height: var(--body-4-line-height); }
+    .rly-link-btn.size-xs.focused::after { height: 22px; }
+
+    /* ── Switch ── */
+    .rly-switch-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .rly-switch-wrap.disabled { opacity: 0.4; cursor: not-allowed; }
+    .rly-switch-control {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+    .rly-switch-track {
+      display: flex;
+      align-items: center;
+      width: 32px;
+      height: 20px;
+      padding: 2px;
+      border-radius: var(--radius-full);
+      background: var(--colors-bg-tertiary);
+      transition: background 0.2s, justify-content 0.2s;
+      overflow: hidden;
+    }
+    .rly-switch-track.selected       { background: var(--colors-bg-brand-primary);   justify-content: flex-end; }
+    .rly-switch-track.hovered        { background: var(--colors-bg-quarternary); }
+    .rly-switch-track.selected.hovered,
+    .rly-switch-track.selected.pressed,
+    .rly-switch-track.selected.focused { background: var(--colors-bg-brand-secondary); }
+    .rly-switch-track.pressed        { background: var(--colors-bg-quarternary); }
+    .rly-switch-track.focused        { background: var(--colors-bg-quarternary); }
+    .rly-switch-thumb {
+      width: 16px; height: 16px;
+      border-radius: var(--radius-full);
+      background: var(--colors-base-white);
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+    .rly-switch-ring {
+      position: absolute;
+      inset: 1px 0.667px;
+      border: 2px solid var(--colors-border-focus);
+      border-radius: 14px;
+      pointer-events: none;
+    }
+    .rly-switch-label {
+      font-family: var(--font-family-body);
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      color: var(--colors-fg-primary);
+      font-weight: 400;
+    }
+
+    /* ── Checkbox ── */
+    .rly-check-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .rly-check-wrap.disabled { opacity: 0.4; cursor: not-allowed; }
+    .rly-check-control {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+    }
+    .rly-check-box {
+      position: relative;
+      width: 20px; height: 20px;
+      border-radius: var(--radius-xs);
+      border: 2px solid var(--colors-border-secondary);
+      background: transparent;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .rly-check-box.active { border-color: var(--colors-bg-brand-secondary); }
+    .rly-check-box.checked-yes,
+    .rly-check-box.checked-indeterminate {
+      border: none;
+      background: var(--colors-bg-brand-primary);
+    }
+    .rly-check-box.checked-yes.active,
+    .rly-check-box.checked-indeterminate.active { background: var(--colors-bg-brand-secondary); }
+    .rly-check-box svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .rly-focus-ring-sq {
+      position: absolute;
+      inset: 1px;
+      border: 2px solid var(--colors-border-focus);
+      border-radius: var(--radius-xs);
+      pointer-events: none;
+    }
+    .rly-check-label, .rly-radio-label {
+      font-family: var(--font-family-body);
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      color: var(--colors-fg-primary);
+      font-weight: 400;
+    }
+
+    /* ── Radio ── */
+    .rly-radio-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .rly-radio-wrap.disabled { opacity: 0.4; cursor: not-allowed; }
+    .rly-radio-control {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+    }
+    .rly-radio-outer {
+      display: flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--colors-border-secondary);
+      background: transparent;
+      flex-shrink: 0;
+    }
+    .rly-radio-outer.active { border-color: var(--colors-bg-brand-secondary); }
+    .rly-radio-outer.checked { border: none; background: var(--colors-bg-brand-primary); }
+    .rly-radio-outer.checked.active { background: var(--colors-bg-brand-secondary); }
+    .rly-radio-dot {
+      width: 16px; height: 16px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--colors-base-white);
+      background: var(--colors-bg-brand-primary);
+      flex-shrink: 0;
+    }
+    .rly-radio-outer.checked.active .rly-radio-dot { background: var(--colors-bg-brand-secondary); }
+    .rly-focus-ring-round {
+      position: absolute;
+      inset: 1px;
+      border: 2px solid var(--colors-border-focus);
+      border-radius: var(--radius-full);
+      pointer-events: none;
+    }
+
+    /* ── Badge ── */
+    .rly-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 22px;
+      padding: 0 4px;
+      border-radius: var(--radius-xs);
+      font-family: var(--font-family-body);
+      font-size: var(--body-4-size);
+      line-height: var(--body-4-line-height);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .rly-badge svg { flex-shrink: 0; }
+    /* Neutral */
+    .rly-badge-neutral        { background: var(--colors-component-bg-badge-neutral); color: var(--colors-fg-secondary); }
+    .rly-badge-neutral.solid  { border: 1px solid var(--colors-border-secondary); }
+    /* Green */
+    .rly-badge-green          { background: var(--colors-bg-system-success-primary); color: var(--colors-fg-system-success-primary); }
+    .rly-badge-green.solid    { border: 1px solid var(--colors-border-system-success-primary); }
+    /* Yellow */
+    .rly-badge-yellow         { background: var(--colors-bg-system-warning-primary); color: var(--colors-fg-system-warning-primary); }
+    .rly-badge-yellow.solid   { border: 1px solid var(--colors-border-system-warning-primary); }
+    /* Red */
+    .rly-badge-red            { background: var(--colors-bg-system-error-primary); color: var(--colors-fg-system-error-primary); }
+    .rly-badge-red.solid      { border: 1px solid var(--colors-border-system-error-primary); }
+    /* Blue */
+    .rly-badge-blue           { background: var(--colors-bg-system-info-primary); color: var(--colors-fg-system-info-primary); }
+    .rly-badge-blue.solid     { border: 1px solid var(--colors-border-system-info-primary); }
+
   </style>
 </head>
 <body>
@@ -494,6 +765,12 @@
   <nav>
     <a href="#component-button">Button</a>
     <a href="#component-input">Input</a>
+    <a href="#component-icon-button">Icon Button</a>
+    <a href="#component-link-button">Link Button</a>
+    <a href="#component-switch">Switch</a>
+    <a href="#component-checkbox">Checkbox</a>
+    <a href="#component-radio">Radio</a>
+    <a href="#component-badge">Badge</a>
     <a href="#colors-base">Base Colors</a>
     <a href="#colors-neutral">Neutral</a>
     <a href="#colors-brand">Brand</a>
@@ -887,6 +1164,367 @@
           </div>
           <div class="variant-label">Error (no msg)</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ICON BUTTON ── -->
+  <section id="component-icon-button" class="component-section">
+    <div class="component-header">
+      <h2>Icon Button</h2>
+      <div class="component-meta">
+        <span>file:</span> components/IconButton.tsx &nbsp;·&nbsp;
+        <span>variants:</span> type × state
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Primary</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-primary"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-primary focused"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-primary hovered"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-primary pressed"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-primary disabled" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Secondary</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-secondary"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-secondary focused"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-secondary hovered"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-secondary pressed"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-secondary disabled" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Tertiary</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-tertiary"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-tertiary focused"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-tertiary hovered"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-tertiary pressed"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-icon-btn rly-icon-btn-tertiary disabled" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LINK BUTTON ── -->
+  <section id="component-link-button" class="component-section">
+    <div class="component-header">
+      <h2>Link Button</h2>
+      <div class="component-meta">
+        <span>file:</span> components/LinkButton.tsx &nbsp;·&nbsp;
+        <span>variants:</span> size × state
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">States (size L)</div>
+      <div class="variant-row">
+        <div class="variant-cell"><button class="rly-link-btn size-l">Button</button><div class="variant-label">Default</div></div>
+        <div class="variant-cell"><button class="rly-link-btn size-l focused">Button</button><div class="variant-label">Focused</div></div>
+        <div class="variant-cell"><button class="rly-link-btn size-l hovered">Button</button><div class="variant-label">Hovered</div></div>
+        <div class="variant-cell"><button class="rly-link-btn size-l pressed">Button</button><div class="variant-label">Pressed</div></div>
+        <div class="variant-cell"><button class="rly-link-btn size-l disabled" disabled>Button</button><div class="variant-label">Disabled</div></div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Sizes (Default state)</div>
+      <div class="variant-row" style="align-items:center;">
+        <div class="variant-cell"><button class="rly-link-btn size-l">Button</button><div class="variant-label">L — 18px</div></div>
+        <div class="variant-cell"><button class="rly-link-btn size-m">Button</button><div class="variant-label">M — 16px</div></div>
+        <div class="variant-cell"><button class="rly-link-btn size-s">Button</button><div class="variant-label">S — 14px</div></div>
+        <div class="variant-cell"><button class="rly-link-btn size-xs">Button</button><div class="variant-label">XS — 12px</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SWITCH ── -->
+  <section id="component-switch" class="component-section">
+    <div class="component-header">
+      <h2>Switch</h2>
+      <div class="component-meta">
+        <span>file:</span> components/Switch.tsx &nbsp;·&nbsp;
+        <span>variants:</span> isSelected × state × isDisabled
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Not selected</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <label class="rly-switch-wrap"><div class="rly-switch-control"><div class="rly-switch-track"><div class="rly-switch-thumb"></div></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-switch-wrap"><div class="rly-switch-control"><div class="rly-switch-track focused"><div class="rly-switch-thumb"></div></div><div class="rly-switch-ring"></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-switch-wrap"><div class="rly-switch-control"><div class="rly-switch-track hovered"><div class="rly-switch-thumb"></div></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-switch-wrap"><div class="rly-switch-control"><div class="rly-switch-track pressed"><div class="rly-switch-thumb"></div></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-switch-wrap disabled"><div class="rly-switch-control"><div class="rly-switch-track"><div class="rly-switch-thumb"></div></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Selected</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <label class="rly-switch-wrap"><div class="rly-switch-control"><div class="rly-switch-track selected"><div class="rly-switch-thumb"></div></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-switch-wrap"><div class="rly-switch-control"><div class="rly-switch-track selected focused"><div class="rly-switch-thumb"></div></div><div class="rly-switch-ring"></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-switch-wrap"><div class="rly-switch-control"><div class="rly-switch-track selected hovered"><div class="rly-switch-thumb"></div></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-switch-wrap"><div class="rly-switch-control"><div class="rly-switch-track selected pressed"><div class="rly-switch-thumb"></div></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-switch-wrap disabled"><div class="rly-switch-control"><div class="rly-switch-track selected"><div class="rly-switch-thumb"></div></div></div><span class="rly-switch-label">Switch</span></label>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CHECKBOX ── -->
+  <section id="component-checkbox" class="component-section">
+    <div class="component-header">
+      <h2>Checkbox</h2>
+      <div class="component-meta">
+        <span>file:</span> components/Checkbox.tsx &nbsp;·&nbsp;
+        <span>variants:</span> isChecked × state
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Unchecked</div>
+      <div class="variant-row">
+        <div class="variant-cell"><label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box"></div></div><span class="rly-check-label">Checkbox</span></label><div class="variant-label">Default</div></div>
+        <div class="variant-cell"><label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box active"></div><div class="rly-focus-ring-sq"></div></div><span class="rly-check-label">Checkbox</span></label><div class="variant-label">Focused</div></div>
+        <div class="variant-cell"><label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box active"></div></div><span class="rly-check-label">Checkbox</span></label><div class="variant-label">Hovered</div></div>
+        <div class="variant-cell"><label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box active"></div></div><span class="rly-check-label">Checkbox</span></label><div class="variant-label">Pressed</div></div>
+        <div class="variant-cell"><label class="rly-check-wrap disabled"><div class="rly-check-control"><div class="rly-check-box"></div></div><span class="rly-check-label">Checkbox</span></label><div class="variant-label">Disabled</div></div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Checked</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box checked-yes"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-primary)"/><path d="M5 10l3.5 3.5L15 7" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box checked-yes active"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-secondary)"/><path d="M5 10l3.5 3.5L15 7" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="rly-focus-ring-sq"></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box checked-yes active"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-secondary)"/><path d="M5 10l3.5 3.5L15 7" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box checked-yes active"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-secondary)"/><path d="M5 10l3.5 3.5L15 7" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-check-wrap disabled"><div class="rly-check-control"><div class="rly-check-box checked-yes active"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-secondary)"/><path d="M5 10l3.5 3.5L15 7" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Indeterminate</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box checked-indeterminate"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-primary)"/><path d="M6 10h8" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round"/></svg></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box checked-indeterminate active"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-secondary)"/><path d="M6 10h8" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round"/></svg></div><div class="rly-focus-ring-sq"></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-check-wrap"><div class="rly-check-control"><div class="rly-check-box checked-indeterminate active"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-secondary)"/><path d="M6 10h8" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round"/></svg></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <label class="rly-check-wrap disabled"><div class="rly-check-control"><div class="rly-check-box checked-indeterminate active"><svg viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="4" fill="var(--colors-bg-brand-secondary)"/><path d="M6 10h8" stroke="var(--colors-fg-primary)" stroke-width="2" stroke-linecap="round"/></svg></div></div><span class="rly-check-label">Checkbox</span></label>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RADIO ── -->
+  <section id="component-radio" class="component-section">
+    <div class="component-header">
+      <h2>Radio</h2>
+      <div class="component-meta">
+        <span>file:</span> components/Radio.tsx &nbsp;·&nbsp;
+        <span>variants:</span> isChecked × state
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Unchecked</div>
+      <div class="variant-row">
+        <div class="variant-cell"><label class="rly-radio-wrap"><div class="rly-radio-control"><div class="rly-radio-outer"></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Default</div></div>
+        <div class="variant-cell"><label class="rly-radio-wrap"><div class="rly-radio-control"><div class="rly-radio-outer active"></div><div class="rly-focus-ring-round"></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Focused</div></div>
+        <div class="variant-cell"><label class="rly-radio-wrap"><div class="rly-radio-control"><div class="rly-radio-outer active"></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Hovered</div></div>
+        <div class="variant-cell"><label class="rly-radio-wrap"><div class="rly-radio-control"><div class="rly-radio-outer active"></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Pressed</div></div>
+        <div class="variant-cell"><label class="rly-radio-wrap disabled"><div class="rly-radio-control"><div class="rly-radio-outer"></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Disabled</div></div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Checked</div>
+      <div class="variant-row">
+        <div class="variant-cell"><label class="rly-radio-wrap"><div class="rly-radio-control"><div class="rly-radio-outer checked"><div class="rly-radio-dot"></div></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Default</div></div>
+        <div class="variant-cell"><label class="rly-radio-wrap"><div class="rly-radio-control"><div class="rly-radio-outer checked active"><div class="rly-radio-dot"></div></div><div class="rly-focus-ring-round"></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Focused</div></div>
+        <div class="variant-cell"><label class="rly-radio-wrap"><div class="rly-radio-control"><div class="rly-radio-outer checked active"><div class="rly-radio-dot"></div></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Hovered</div></div>
+        <div class="variant-cell"><label class="rly-radio-wrap"><div class="rly-radio-control"><div class="rly-radio-outer checked active"><div class="rly-radio-dot"></div></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Pressed</div></div>
+        <div class="variant-cell"><label class="rly-radio-wrap disabled"><div class="rly-radio-control"><div class="rly-radio-outer checked active"><div class="rly-radio-dot"></div></div></div><span class="rly-radio-label">Radio</span></label><div class="variant-label">Disabled</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BADGE ── -->
+  <section id="component-badge" class="component-section">
+    <div class="component-header">
+      <h2>Badge</h2>
+      <div class="component-meta">
+        <span>file:</span> components/Badge.tsx &nbsp;·&nbsp;
+        <span>variants:</span> type × variant (Solid | Subtle)
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Solid (with border)</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-neutral solid"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Neutral</div>
+        </div>
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-green solid"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Green</div>
+        </div>
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-yellow solid"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Yellow</div>
+        </div>
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-red solid"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Red</div>
+        </div>
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-blue solid"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Blue</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Subtle (no border)</div>
+      <div class="variant-row">
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-neutral"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Neutral</div>
+        </div>
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-green"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Green</div>
+        </div>
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-yellow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Yellow</div>
+        </div>
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-red"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Red</div>
+        </div>
+        <div class="variant-cell">
+          <span class="rly-badge rly-badge-blue"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.236 2.506 2.764.402-2 1.949.472 2.751L6 7.25 3.528 8.608 4 5.857 2 3.908l2.764-.402L6 1z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>Status</span>
+          <div class="variant-label">Blue</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-group">
+      <div class="variant-group-label">Without icon</div>
+      <div class="variant-row">
+        <div class="variant-cell"><span class="rly-badge rly-badge-neutral solid">Status</span><div class="variant-label">Neutral</div></div>
+        <div class="variant-cell"><span class="rly-badge rly-badge-green solid">Status</span><div class="variant-label">Green</div></div>
+        <div class="variant-cell"><span class="rly-badge rly-badge-yellow solid">Status</span><div class="variant-label">Yellow</div></div>
+        <div class="variant-cell"><span class="rly-badge rly-badge-red solid">Status</span><div class="variant-label">Red</div></div>
+        <div class="variant-cell"><span class="rly-badge rly-badge-blue solid">Status</span><div class="variant-label">Blue</div></div>
       </div>
     </div>
   </section>
