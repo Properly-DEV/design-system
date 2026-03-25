@@ -16,6 +16,8 @@
  *   - Added sizes M and L; S padding is now uniform 4px (was 0 6px)
  *   - Added Quaternary (ghost) variant
  *   - Component now extends ButtonHTMLAttributes and uses forwardRef
+ *   - `label` prop removed — use children instead
+ *   - `leftIcon`/`rightIcon`/`showLeftIcon`/`showRightIcon` replaced with `startIcon`/`endIcon`
  */
 
 import React, { forwardRef } from "react";
@@ -26,14 +28,11 @@ export type ButtonVariant = "Primary" | "Secondary" | "Tertiary" | "Quaternary";
 export type ButtonSize    = "S" | "M" | "L";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label?:         string;
-  variant?:       ButtonVariant;
-  size?:          ButtonSize;
-  leftIcon?:      React.ReactNode;
-  rightIcon?:     React.ReactNode;
-  showLeftIcon?:  boolean;
-  showRightIcon?: boolean;
-  loading?:       boolean;
+  variant?:   ButtonVariant;
+  size?:      ButtonSize;
+  startIcon?: React.ReactNode;
+  endIcon?:   React.ReactNode;
+  loading?:   boolean;
 }
 
 // ── Styles ─────────────────────────────────────────────────────────────────────
@@ -81,15 +80,15 @@ const styles = `
 .rly-button--tertiary:focus-visible::after { inset: -5px; }
 
 /* ── Disabled ─────────────────────────────────────────────────── */
-.rly-button:disabled:not([data-loading]) {
+.rly-button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
 /* ── Loading ──────────────────────────────────────────────────── */
-.rly-button[data-loading] { cursor: wait; }
-.rly-button[data-loading] .rly-button__label,
-.rly-button[data-loading] .rly-button__icon { opacity: 0; }
+.rly-button--loading { cursor: wait; pointer-events: none; }
+.rly-button--loading .rly-button__label,
+.rly-button--loading .rly-button__icon { opacity: 0; }
 
 @keyframes rly-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
@@ -102,13 +101,13 @@ const styles = `
 }
 
 /* ── Sizes ────────────────────────────────────────────────────── */
-.rly-button--s { padding: 4px; }
-.rly-button--m { padding: 8px 6px; }
-.rly-button--l { padding: 12px 8px; }
+.rly-button--s { padding: 4px; /* TODO: replace with spacing tokens when available */ }
+.rly-button--m { padding: 8px 6px; /* TODO: replace with spacing tokens when available */ }
+.rly-button--l { padding: 12px 8px; /* TODO: replace with spacing tokens when available */ }
 
-.rly-button__label { padding: 0 4px; }
+.rly-button__label { padding: 0 4px; /* TODO: replace with spacing tokens when available */ }
 .rly-button--m .rly-button__label,
-.rly-button--l .rly-button__label { padding: 0 6px; }
+.rly-button--l .rly-button__label { padding: 0 6px; /* TODO: replace with spacing tokens when available */ }
 
 /* ── Icon slot ────────────────────────────────────────────────── */
 .rly-button__icon {
@@ -121,22 +120,22 @@ const styles = `
 /* ── Primary ──────────────────────────────────────────────────── */
 .rly-button--primary { background: var(--colors-bg-brand-primary); }
 
-.rly-button--primary:hover:not(:disabled):not([data-loading]),
+.rly-button--primary:hover:not(:disabled):not(.rly-button--loading),
 .rly-button--primary:focus-visible {
   background: var(--colors-bg-brand-secondary);
 }
-.rly-button--primary:active:not(:disabled):not([data-loading]) {
+.rly-button--primary:active:not(:disabled):not(.rly-button--loading) {
   background: var(--colors-bg-brand-tertiary);
 }
 
 /* ── Secondary ────────────────────────────────────────────────── */
 .rly-button--secondary { background: var(--colors-neutral-25); }
 
-.rly-button--secondary:hover:not(:disabled):not([data-loading]),
+.rly-button--secondary:hover:not(:disabled):not(.rly-button--loading),
 .rly-button--secondary:focus-visible {
   background: var(--colors-bg-tertiary);
 }
-.rly-button--secondary:active:not(:disabled):not([data-loading]) {
+.rly-button--secondary:active:not(:disabled):not(.rly-button--loading) {
   background: var(--colors-bg-quarternary);
 }
 
@@ -145,22 +144,22 @@ const styles = `
   background: transparent;
   border: 1px solid var(--colors-border-secondary);
 }
-.rly-button--tertiary:hover:not(:disabled):not([data-loading]),
+.rly-button--tertiary:hover:not(:disabled):not(.rly-button--loading),
 .rly-button--tertiary:focus-visible {
   border-color: var(--colors-border-primary);
 }
-.rly-button--tertiary:active:not(:disabled):not([data-loading]) {
+.rly-button--tertiary:active:not(:disabled):not(.rly-button--loading) {
   border-color: var(--colors-border-secondary);
 }
 
 /* ── Quaternary (ghost) ───────────────────────────────────────── */
 .rly-button--quaternary { background: transparent; }
 
-.rly-button--quaternary:hover:not(:disabled):not([data-loading]),
+.rly-button--quaternary:hover:not(:disabled):not(.rly-button--loading),
 .rly-button--quaternary:focus-visible {
   background: var(--colors-bg-tertiary);
 }
-.rly-button--quaternary:active:not(:disabled):not([data-loading]) {
+.rly-button--quaternary:active:not(:disabled):not(.rly-button--loading) {
   background: var(--colors-bg-quarternary);
 }
 `;
@@ -176,7 +175,7 @@ function injectStyles() {
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
 
-function PlusIcon() {
+export function PlusIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="var(--icon-stroke, 2)" strokeLinecap="round" />
@@ -184,7 +183,7 @@ function PlusIcon() {
   );
 }
 
-function ChevronRightIcon() {
+export function ChevronRightIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="var(--icon-stroke, 2)" strokeLinecap="round" strokeLinejoin="round" />
@@ -206,14 +205,12 @@ function SpinnerIcon() {
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
     {
-      label         = "Button",
-      variant       = "Primary",
-      size          = "M",
-      leftIcon,
-      rightIcon,
-      showLeftIcon  = true,
-      showRightIcon = true,
-      loading       = false,
+      type      = "button",
+      variant   = "Primary",
+      size      = "M",
+      startIcon,
+      endIcon,
+      loading   = false,
       disabled,
       className,
       children,
@@ -227,6 +224,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       "rly-button",
       `rly-button--${variant.toLowerCase()}`,
       `rly-button--${size.toLowerCase()}`,
+      loading ? "rly-button--loading" : null,
       className,
     ]
       .filter(Boolean)
@@ -236,22 +234,23 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cls}
-        disabled={disabled || loading}
+        type={type}
+        disabled={disabled}
         aria-busy={loading || undefined}
-        data-loading={loading || undefined}
+        aria-disabled={loading || undefined}
         {...rest}
       >
-        {showLeftIcon && !loading && (
+        {startIcon && !loading && (
           <span className="rly-button__icon rly-button__icon--left">
-            {leftIcon ?? <PlusIcon />}
+            {startIcon}
           </span>
         )}
 
-        <span className="rly-button__label">{children ?? label}</span>
+        <span className="rly-button__label">{children}</span>
 
-        {showRightIcon && !loading && (
+        {endIcon && !loading && (
           <span className="rly-button__icon rly-button__icon--right">
-            {rightIcon ?? <ChevronRightIcon />}
+            {endIcon}
           </span>
         )}
 
