@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Button — Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --colors-bg-brand-primary:   #00ec88;
+      --colors-bg-brand-secondary: #00b867;
+      --colors-bg-brand-tertiary:  #008a52;
+      --colors-bg-tertiary:        #e9e9e9;
+      --colors-bg-quarternary:     #d9d9d9;
+      --colors-neutral-25:         #f8f8f8;
+      --colors-fg-primary:         #080808;
+      --colors-border-primary:     #a7a7a7;
+      --colors-border-secondary:   #c6c6c6;
+      --colors-border-focus:       #6388f7;
+      --radius-sm:                 8px;
+      --button-2-size:             14px;
+      --button-2-line-height:      16px;
+      --button-2-weight:           500;
+      --icon-stroke:               2;
+      --font-family-body:          'Inter', sans-serif;
+    }
+
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f8f8;
+      color: var(--colors-fg-primary);
+      -webkit-font-smoothing: antialiased;
+      padding: 48px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #595959;
+      margin-bottom: 48px;
+    }
+
+    /* ── Section layout ─────────────────────────────────────────── */
+    .section { margin-bottom: 48px; }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a7a7a7;
+      margin-bottom: 20px;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid #e9e9e9;
+    }
+    .row + .row { margin-top: 8px; }
+    .row-label {
+      font-size: 11px;
+      color: #a7a7a7;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+    .divider {
+      width: 1px;
+      height: 24px;
+      background: #e9e9e9;
+      flex-shrink: 0;
+    }
+
+    /* ── Button base ────────────────────────────────────────────── */
+    .rly-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      outline: none;
+      user-select: none;
+      font-family: var(--font-family-body);
+      font-size: var(--button-2-size);
+      line-height: var(--button-2-line-height);
+      font-weight: var(--button-2-weight);
+      color: var(--colors-fg-primary);
+      text-transform: capitalize;
+      white-space: nowrap;
+      overflow: hidden;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .rly-button:focus-visible { overflow: visible; }
+
+    .rly-button:focus-visible::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 2px solid var(--colors-border-focus);
+      border-radius: calc(var(--radius-sm) + 4px);
+      pointer-events: none;
+    }
+    .rly-button--tertiary:focus-visible::after { inset: -5px; }
+
+    .rly-button:disabled:not([data-loading]) { opacity: 0.4; cursor: not-allowed; }
+    .rly-button[data-loading] { cursor: wait; }
+    .rly-button[data-loading] .rly-button__label,
+    .rly-button[data-loading] .rly-button__icon { opacity: 0; }
+
+    @keyframes rly-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .rly-button__spinner {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      animation: rly-spin 0.8s linear infinite;
+    }
+
+    /* ── Sizes ──────────────────────────────────────────────────── */
+    .rly-button--s { padding: 4px; }
+    .rly-button--m { padding: 8px 6px; }
+    .rly-button--l { padding: 12px 8px; }
+
+    .rly-button__label { padding: 0 4px; }
+    .rly-button--m .rly-button__label,
+    .rly-button--l .rly-button__label { padding: 0 6px; }
+
+    .rly-button__icon {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Primary ────────────────────────────────────────────────── */
+    .rly-button--primary { background: var(--colors-bg-brand-primary); }
+    .rly-button--primary:hover:not(:disabled):not([data-loading]),
+    .rly-button--primary:focus-visible { background: var(--colors-bg-brand-secondary); }
+    .rly-button--primary:active:not(:disabled):not([data-loading]) { background: var(--colors-bg-brand-tertiary); }
+
+    /* ── Secondary ──────────────────────────────────────────────── */
+    .rly-button--secondary { background: var(--colors-neutral-25); }
+    .rly-button--secondary:hover:not(:disabled):not([data-loading]),
+    .rly-button--secondary:focus-visible { background: var(--colors-bg-tertiary); }
+    .rly-button--secondary:active:not(:disabled):not([data-loading]) { background: var(--colors-bg-quarternary); }
+
+    /* ── Tertiary ───────────────────────────────────────────────── */
+    .rly-button--tertiary { background: transparent; border: 1px solid var(--colors-border-secondary); }
+    .rly-button--tertiary:hover:not(:disabled):not([data-loading]),
+    .rly-button--tertiary:focus-visible { border-color: var(--colors-border-primary); }
+    .rly-button--tertiary:active:not(:disabled):not([data-loading]) { border-color: var(--colors-border-secondary); }
+
+    /* ── Quaternary ─────────────────────────────────────────────── */
+    .rly-button--quaternary { background: transparent; }
+    .rly-button--quaternary:hover:not(:disabled):not([data-loading]),
+    .rly-button--quaternary:focus-visible { background: var(--colors-bg-tertiary); }
+    .rly-button--quaternary:active:not(:disabled):not([data-loading]) { background: var(--colors-bg-quarternary); }
+
+    /* ── Static state overrides (for preview rows) ──────────────── */
+    .is-hovered.rly-button--primary  { background: var(--colors-bg-brand-secondary); }
+    .is-pressed.rly-button--primary  { background: var(--colors-bg-brand-tertiary); }
+    .is-focused.rly-button--primary  { background: var(--colors-bg-brand-secondary); overflow: visible; }
+
+    .is-hovered.rly-button--secondary { background: var(--colors-bg-tertiary); }
+    .is-pressed.rly-button--secondary  { background: var(--colors-bg-quarternary); }
+    .is-focused.rly-button--secondary  { background: var(--colors-bg-tertiary); overflow: visible; }
+
+    .is-hovered.rly-button--tertiary  { border-color: var(--colors-border-primary); }
+    .is-pressed.rly-button--tertiary   { border-color: var(--colors-border-secondary); }
+    .is-focused.rly-button--tertiary   { border-color: var(--colors-border-primary); overflow: visible; }
+
+    .is-hovered.rly-button--quaternary { background: var(--colors-bg-tertiary); }
+    .is-pressed.rly-button--quaternary  { background: var(--colors-bg-quarternary); }
+    .is-focused.rly-button--quaternary  { background: var(--colors-bg-tertiary); overflow: visible; }
+
+    .is-focused::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 2px solid var(--colors-border-focus);
+      border-radius: calc(var(--radius-sm) + 4px);
+      pointer-events: none;
+    }
+    .is-focused.rly-button--tertiary::after { inset: -5px; }
+  </style>
+</head>
+<body>
+
+  <h1>Button</h1>
+  <p class="subtitle">variant × size — live interactive + static state preview</p>
+
+  <!-- ── Variants × States ──────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Primary</div>
+    <div class="row">
+      <span class="row-label">Default</span>
+      <button class="rly-button rly-button--primary rly-button--m">
+        <span class="rly-button__icon"><!-- plus --><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><!-- chevron --><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Hover</span>
+      <button class="rly-button rly-button--primary rly-button--m is-hovered">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Pressed</span>
+      <button class="rly-button rly-button--primary rly-button--m is-pressed">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Focused</span>
+      <button class="rly-button rly-button--primary rly-button--m is-focused">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Disabled</span>
+      <button class="rly-button rly-button--primary rly-button--m" disabled>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Loading</span>
+      <button class="rly-button rly-button--primary rly-button--m" data-loading disabled aria-busy="true">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="rly-button__spinner">
+          <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-opacity="0.2" stroke-width="2"/>
+          <path d="M8 2a6 6 0 0 1 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Secondary</div>
+    <div class="row">
+      <span class="row-label">Default</span>
+      <button class="rly-button rly-button--secondary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Hover</span>
+      <button class="rly-button rly-button--secondary rly-button--m is-hovered">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Pressed</span>
+      <button class="rly-button rly-button--secondary rly-button--m is-pressed">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Focused</span>
+      <button class="rly-button rly-button--secondary rly-button--m is-focused">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Disabled</span>
+      <button class="rly-button rly-button--secondary rly-button--m" disabled>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Loading</span>
+      <button class="rly-button rly-button--secondary rly-button--m" data-loading disabled aria-busy="true">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="rly-button__spinner">
+          <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-opacity="0.2" stroke-width="2"/>
+          <path d="M8 2a6 6 0 0 1 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Tertiary</div>
+    <div class="row">
+      <span class="row-label">Default</span>
+      <button class="rly-button rly-button--tertiary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Hover</span>
+      <button class="rly-button rly-button--tertiary rly-button--m is-hovered">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Pressed</span>
+      <button class="rly-button rly-button--tertiary rly-button--m is-pressed">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Focused</span>
+      <button class="rly-button rly-button--tertiary rly-button--m is-focused">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Disabled</span>
+      <button class="rly-button rly-button--tertiary rly-button--m" disabled>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Loading</span>
+      <button class="rly-button rly-button--tertiary rly-button--m" data-loading disabled aria-busy="true">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="rly-button__spinner">
+          <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-opacity="0.2" stroke-width="2"/>
+          <path d="M8 2a6 6 0 0 1 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Quaternary</div>
+    <div class="row">
+      <span class="row-label">Default</span>
+      <button class="rly-button rly-button--quaternary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Hover</span>
+      <button class="rly-button rly-button--quaternary rly-button--m is-hovered">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Pressed</span>
+      <button class="rly-button rly-button--quaternary rly-button--m is-pressed">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Focused</span>
+      <button class="rly-button rly-button--quaternary rly-button--m is-focused">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Disabled</span>
+      <button class="rly-button rly-button--quaternary rly-button--m" disabled>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Sizes ─────────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Sizes</div>
+    <div class="row">
+      <span class="row-label">S</span>
+      <button class="rly-button rly-button--primary rly-button--s">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--secondary rly-button--s">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--tertiary rly-button--s">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--quaternary rly-button--s">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+    </div>
+    <div class="row">
+      <span class="row-label">M</span>
+      <button class="rly-button rly-button--primary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--secondary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--tertiary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--quaternary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+    </div>
+    <div class="row">
+      <span class="row-label">L</span>
+      <button class="rly-button rly-button--primary rly-button--l">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--secondary rly-button--l">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--tertiary rly-button--l">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="rly-button rly-button--quaternary rly-button--l">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Icon combinations ─────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Icon combinations</div>
+    <div class="row">
+      <span class="row-label">Both icons</span>
+      <button class="rly-button rly-button--primary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Left only</span>
+      <button class="rly-button rly-button--primary rly-button--m">
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="rly-button__label">Button</span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">Right only</span>
+      <button class="rly-button rly-button--primary rly-button--m">
+        <span class="rly-button__label">Button</span>
+        <span class="rly-button__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="divider"></div>
+      <span class="row-label">No icons</span>
+      <button class="rly-button rly-button--primary rly-button--m">
+        <span class="rly-button__label">Button</span>
+      </button>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -351,8 +351,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: 32px;
-      padding: 0 6px;
+      padding: 8px 6px;
       border-radius: var(--radius-sm);
       border: none;
       cursor: pointer;
@@ -362,53 +361,68 @@
       font-size: var(--button-2-size);
       line-height: var(--button-2-line-height);
       font-weight: var(--button-2-weight);
+      color: var(--colors-fg-primary);
       text-transform: capitalize;
       white-space: nowrap;
-      gap: 0;
       transition: background 0.15s, border-color 0.15s, opacity 0.15s;
       overflow: hidden;
     }
     .rly-btn-text { padding: 0 6px; }
-    .rly-btn-icon { display: flex; flex-shrink: 0; }
+    .rly-btn-icon { display: flex; flex-shrink: 0; align-items: center; }
+
+    /* Sizes */
+    .rly-btn.size-s { padding: 4px; }
+    .rly-btn.size-s .rly-btn-text { padding: 0 4px; }
+    .rly-btn.size-l { padding: 12px 8px; }
 
     /* Primary */
-    .rly-btn-primary            { background: var(--colors-bg-brand-primary);   color: var(--colors-fg-primary); }
-    .rly-btn-primary.hovered    { background: var(--colors-bg-brand-secondary);  }
-    .rly-btn-primary.pressed    { background: var(--colors-bg-brand-tertiary);   }
+    .rly-btn-primary            { background: var(--colors-bg-brand-primary); }
+    .rly-btn-primary.hovered    { background: var(--colors-bg-brand-secondary); }
+    .rly-btn-primary.pressed    { background: var(--colors-bg-brand-tertiary); }
     .rly-btn-primary.focused    { background: var(--colors-bg-brand-secondary); overflow: visible; }
     .rly-btn-primary.disabled   { background: var(--colors-bg-brand-primary); opacity: 0.4; cursor: not-allowed; }
     .rly-btn-primary.loading    { background: var(--colors-bg-brand-primary); }
 
     /* Secondary */
-    .rly-btn-secondary          { background: transparent; color: var(--colors-fg-primary); border: 1px solid var(--colors-border-secondary); }
-    .rly-btn-secondary.hovered  { border-color: var(--colors-border-primary); }
-    .rly-btn-secondary.pressed  { border-color: var(--colors-border-secondary); }
-    .rly-btn-secondary.focused  { border-color: var(--colors-border-primary); overflow: visible; }
-    .rly-btn-secondary.disabled { border-color: var(--colors-border-secondary); opacity: 0.4; cursor: not-allowed; }
-    .rly-btn-secondary.loading  { border-color: var(--colors-border-secondary); }
+    .rly-btn-secondary          { background: var(--colors-neutral-25); }
+    .rly-btn-secondary.hovered  { background: var(--colors-bg-tertiary); }
+    .rly-btn-secondary.pressed  { background: var(--colors-bg-quarternary); }
+    .rly-btn-secondary.focused  { background: var(--colors-bg-tertiary); overflow: visible; }
+    .rly-btn-secondary.disabled { background: var(--colors-neutral-25); opacity: 0.4; cursor: not-allowed; }
+    .rly-btn-secondary.loading  { background: var(--colors-neutral-25); }
 
     /* Tertiary */
-    .rly-btn-tertiary           { background: transparent; border: none; color: var(--colors-fg-secondary); }
-    .rly-btn-tertiary.focused   { overflow: visible; }
-    .rly-btn-tertiary.disabled  { opacity: 0.4; cursor: not-allowed; }
+    .rly-btn-tertiary           { background: transparent; border: 1px solid var(--colors-border-secondary); }
+    .rly-btn-tertiary.hovered   { border-color: var(--colors-border-primary); }
+    .rly-btn-tertiary.pressed   { border-color: var(--colors-border-secondary); }
+    .rly-btn-tertiary.focused   { border-color: var(--colors-border-primary); overflow: visible; }
+    .rly-btn-tertiary.disabled  { border-color: var(--colors-border-secondary); opacity: 0.4; cursor: not-allowed; }
+    .rly-btn-tertiary.loading   { border-color: var(--colors-border-secondary); }
 
-    /* Focus ring (rendered as ::after pseudo) */
+    /* Quaternary */
+    .rly-btn-quaternary          { background: transparent; }
+    .rly-btn-quaternary.hovered  { background: var(--colors-bg-tertiary); }
+    .rly-btn-quaternary.pressed  { background: var(--colors-bg-quarternary); }
+    .rly-btn-quaternary.focused  { background: var(--colors-bg-tertiary); overflow: visible; }
+    .rly-btn-quaternary.disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Focus ring */
     .rly-btn.focused::after {
       content: '';
       position: absolute;
-      inset: -2px;
+      inset: -4px;
       border: 2px solid var(--colors-border-focus);
-      border-radius: 10px;
+      border-radius: calc(var(--radius-sm) + 4px);
       pointer-events: none;
     }
-    .rly-btn-secondary.focused::after { inset: -3px; border-radius: 10px; }
+    .rly-btn-tertiary.focused::after { inset: -5px; }
 
     /* Spinner */
     .rly-spinner {
       position: absolute;
       left: 50%; top: 50%;
       transform: translate(-50%, -50%);
-      width: 20px; height: 20px;
+      width: 16px; height: 16px;
       animation: rly-spin 0.8s linear infinite;
     }
     @keyframes rly-spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
@@ -792,14 +806,14 @@
       <h2>Button</h2>
       <div class="component-meta">
         <span>file:</span> components/Button.tsx &nbsp;·&nbsp;
-        <span>variants:</span> type × state &nbsp;·&nbsp;
-        <span>sizes:</span> S
+        <span>variants:</span> Primary · Secondary · Tertiary · Quaternary &nbsp;·&nbsp;
+        <span>sizes:</span> S · M · L
       </div>
     </div>
 
     <!-- Primary -->
     <div class="variant-group">
-      <div class="variant-group-label">Type — Primary</div>
+      <div class="variant-group-label">Variant — Primary</div>
       <div class="variant-row">
         <div class="variant-cell">
           <button class="rly-btn rly-btn-primary">
@@ -808,14 +822,6 @@
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </button>
           <div class="variant-label">Default</div>
-        </div>
-        <div class="variant-cell">
-          <button class="rly-btn rly-btn-primary focused">
-            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span class="rly-btn-text">Button</span>
-            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </button>
-          <div class="variant-label">Focused</div>
         </div>
         <div class="variant-cell">
           <button class="rly-btn rly-btn-primary hovered">
@@ -834,6 +840,14 @@
           <div class="variant-label">Pressed</div>
         </div>
         <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary focused">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
           <button class="rly-btn rly-btn-primary disabled" disabled>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
@@ -846,9 +860,9 @@
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <svg class="rly-spinner" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="8" stroke-width="2"/>
-              <path d="M10 2a8 8 0 0 1 8 8" stroke-width="2" stroke-linecap="round"/>
+            <svg class="rly-spinner" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6" stroke-width="2"/>
+              <path d="M8 2a6 6 0 0 1 6 6" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
           <div class="variant-label">Loading</div>
@@ -858,7 +872,7 @@
 
     <!-- Secondary -->
     <div class="variant-group">
-      <div class="variant-group-label">Type — Secondary</div>
+      <div class="variant-group-label">Variant — Secondary</div>
       <div class="variant-row">
         <div class="variant-cell">
           <button class="rly-btn rly-btn-secondary">
@@ -867,14 +881,6 @@
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </button>
           <div class="variant-label">Default</div>
-        </div>
-        <div class="variant-cell">
-          <button class="rly-btn rly-btn-secondary focused">
-            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span class="rly-btn-text">Button</span>
-            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </button>
-          <div class="variant-label">Focused</div>
         </div>
         <div class="variant-cell">
           <button class="rly-btn rly-btn-secondary hovered">
@@ -893,6 +899,14 @@
           <div class="variant-label">Pressed</div>
         </div>
         <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary focused">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
           <button class="rly-btn rly-btn-secondary disabled" disabled>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
@@ -905,9 +919,9 @@
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <svg class="rly-spinner" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="8" stroke-width="2"/>
-              <path d="M10 2a8 8 0 0 1 8 8" stroke-width="2" stroke-linecap="round"/>
+            <svg class="rly-spinner" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6" stroke-width="2"/>
+              <path d="M8 2a6 6 0 0 1 6 6" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
           <div class="variant-label">Loading</div>
@@ -917,7 +931,7 @@
 
     <!-- Tertiary -->
     <div class="variant-group">
-      <div class="variant-group-label">Type — Tertiary</div>
+      <div class="variant-group-label">Variant — Tertiary</div>
       <div class="variant-row">
         <div class="variant-cell">
           <button class="rly-btn rly-btn-tertiary">
@@ -928,15 +942,7 @@
           <div class="variant-label">Default</div>
         </div>
         <div class="variant-cell">
-          <button class="rly-btn rly-btn-tertiary focused">
-            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span class="rly-btn-text">Button</span>
-            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </button>
-          <div class="variant-label">Focused</div>
-        </div>
-        <div class="variant-cell">
-          <button class="rly-btn rly-btn-tertiary hovered" style="color:var(--colors-fg-primary)">
+          <button class="rly-btn rly-btn-tertiary hovered">
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -952,6 +958,14 @@
           <div class="variant-label">Pressed</div>
         </div>
         <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary focused">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
           <button class="rly-btn rly-btn-tertiary disabled" disabled>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
@@ -964,9 +978,9 @@
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <svg class="rly-spinner" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="8" stroke-width="2"/>
-              <path d="M10 2a8 8 0 0 1 8 8" stroke-width="2" stroke-linecap="round"/>
+            <svg class="rly-spinner" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6" stroke-width="2"/>
+              <path d="M8 2a6 6 0 0 1 6 6" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
           <div class="variant-label">Loading</div>
@@ -974,37 +988,136 @@
       </div>
     </div>
 
-    <!-- Icon variants -->
+    <!-- Quaternary -->
     <div class="variant-group">
-      <div class="variant-group-label">Icon variants — Primary</div>
+      <div class="variant-group-label">Variant — Quaternary</div>
       <div class="variant-row">
         <div class="variant-cell">
+          <button class="rly-btn rly-btn-quaternary">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Default</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-quaternary hovered">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Hovered</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-quaternary pressed">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Pressed</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-quaternary focused">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Focused</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-quaternary disabled" disabled>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">Disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sizes -->
+    <div class="variant-group">
+      <div class="variant-group-label">Sizes</div>
+      <div class="variant-row" style="align-items: center;">
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-primary size-s">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">S — Primary</div>
+        </div>
+        <div class="variant-cell">
           <button class="rly-btn rly-btn-primary">
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </button>
-          <div class="variant-label">Both icons</div>
+          <div class="variant-label">M — Primary</div>
         </div>
         <div class="variant-cell">
-          <button class="rly-btn rly-btn-primary">
+          <button class="rly-btn rly-btn-primary size-l">
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span class="rly-btn-text">Button</span>
-          </button>
-          <div class="variant-label">Left only</div>
-        </div>
-        <div class="variant-cell">
-          <button class="rly-btn rly-btn-primary">
             <span class="rly-btn-text">Button</span>
             <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </button>
-          <div class="variant-label">Right only</div>
+          <div class="variant-label">L — Primary</div>
         </div>
         <div class="variant-cell">
-          <button class="rly-btn rly-btn-primary">
+          <button class="rly-btn rly-btn-secondary size-s">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </button>
-          <div class="variant-label">No icons</div>
+          <div class="variant-label">S — Secondary</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">M — Secondary</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-secondary size-l">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">L — Secondary</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary size-s">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">S — Tertiary</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">M — Tertiary</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-tertiary size-l">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">L — Tertiary</div>
+        </div>
+        <div class="variant-cell">
+          <button class="rly-btn rly-btn-quaternary size-l">
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="rly-btn-text">Button</span>
+            <span class="rly-btn-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <div class="variant-label">L — Quaternary</div>
         </div>
       </div>
     </div>
