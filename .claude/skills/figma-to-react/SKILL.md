@@ -332,6 +332,10 @@ Render icons as inline SVG. Use `currentColor` for stroke/fill so icons inherit 
 </svg>
 ```
 
+### Asset lookup
+
+When a Figma component is an icon, logo, or illustration (not a UI control), it is a pre-exported SVG asset — do not rebuild it in code. Look for it in `src/assets/` matching the Figma layer path (e.g. Figma `Icons/network/Solana` → `src/assets/icons/network/solana.svg`).
+
 ## Step 8: Validate Before Delivering
 
 Run this checklist mentally. Do not print it to the user — if something fails, fix it silently. Show the checklist only if the user explicitly asks for an audit.
