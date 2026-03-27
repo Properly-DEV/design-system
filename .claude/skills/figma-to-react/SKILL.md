@@ -32,6 +32,10 @@ Use Figma MCP tool `get_design_context` on the user's link. Extract:
 - Applied variables/tokens (colors, spacing, radius, typography)
 - Component description (may contain usage notes from the designer)
 
+### When in doubt — ask
+
+If any element or behavior is unclear — stop and ask the user before writing code. Do not guess. Also check if child components already exist in the project and import them instead of rebuilding.
+
 **If Figma MCP is not connected:** tell the user to connect Figma MCP before proceeding. This skill requires live Figma data.
 
 **If MCP returns incomplete token data:** check whether a `tokens.css` file exists in the project. If yes, read it. If not, ask the user to provide their tokens file.
@@ -351,6 +355,7 @@ Run this checklist mentally. Do not print it to the user — if something fails,
 9. **No inline styles** on static values — CSS classes only.
 10. **Naming**: classes follow `rly-{component}__...` convention.
 11. **Icons**: `currentColor` + `aria-hidden="true"`.
+12. **No guesswork**: if any behavior was assumed rather than confirmed — ask before delivering.
 
 ---
 
