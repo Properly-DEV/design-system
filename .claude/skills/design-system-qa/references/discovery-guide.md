@@ -2,6 +2,17 @@
 
 Before auditing a component, understand the project's conventions. This makes every audit contextual and accurate, regardless of which design system you're working with.
 
+## Step 0 — Check for CLAUDE.md (always first)
+
+Look for `CLAUDE.md` in the project root. If it exists:
+- Read it
+- Extract: token file path, CSS prefix, CSS strategy, component file structure
+- Use this as your convention profile — **skip Steps 1–3 below**
+
+CLAUDE.md is the authoritative source of conventions for projects that use `project-setup`. Profiling from scratch when it's available wastes tool calls and context.
+
+Only continue to Steps 1–3 when CLAUDE.md is absent or incomplete.
+
 ## Table of Contents
 
 1. [Find the Token File](#1-find-the-token-file)

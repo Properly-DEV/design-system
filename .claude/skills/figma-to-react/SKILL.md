@@ -11,20 +11,30 @@ Convert Figma components into accessible, token-driven, production-grade React +
 
 | Step | Action | Details |
 |------|--------|---------|
-| 1 | Fetch from Figma | Use MCP `get_design_context` on the provided link |
-| 2 | Read tokens | Load project's `tokens.css` into context |
+| 1 | Read context | Read `CLAUDE.md` for stack, prefix, token path — then fetch from Figma |
+| 2 | Read tokens | Load `tokens/tokens.css` into context |
 | 3 | Classify | Identify interaction archetype (Toggle, Selection, Text Entry, Action, Disclosure, Overlay, Display) |
 | 4 | Design API | Create TypeScript interface extending native HTML attrs |
 | 5 | Choose HTML + ARIA | Read `references/component-patterns.md` for the archetype |
 | 6 | Build CSS | Injected `<style>`, pseudoclasses, tokens only |
 | 7 | Assemble TSX | One file, forwardRef, composable |
 | 8 | Validate | Run mental checklist before delivering |
+| 9 | Update STATUS.md | Mark component ✅ Done in the Components table |
 
 ---
 
-## Step 1: Fetch Component Data from Figma
+## Step 1: Read Project Context, Then Fetch from Figma
 
-Use Figma MCP tool `get_design_context` on the user's link. Extract:
+**First, read `CLAUDE.md`** if it exists in the project root. Extract:
+- Stack (framework, TypeScript yes/no) — if not React+TypeScript, adjust the output accordingly
+- CSS prefix — use it for all class names (`.rly-`, `.acme-`, etc.)
+- Token file path — typically `tokens/tokens.css`
+
+If CLAUDE.md is absent or the stack is unclear — ask the user before writing any code.
+
+For stacks other than React+TypeScript: if the difference is minor (e.g. React+JavaScript), proceed with minor adjustments. If the stack is fundamentally different (Vue, Svelte), note it to the user — per-stack reference files may need to be created.
+
+**Then use Figma MCP tool `get_design_context`** on the user's link. Extract:
 - Component name
 - Properties list (variants, booleans, content)
 - Property values (e.g., Type: Primary, Secondary, Tertiary)
@@ -42,7 +52,9 @@ If any element or behavior is unclear — stop and ask the user before writing c
 
 ## Step 2: Read Project Tokens
 
-Load `tokens.css` from the project. Every visual value in the component must reference these tokens. Never hardcode a color, font size, radius, or spacing value — always use `var(--token-name)`.
+Load `tokens/tokens.css` from the project root. If not found there, check `src/tokens/tokens.css` (legacy path) and note the actual path for CSS import references.
+
+Every visual value in the component must reference these tokens. Never hardcode a color, font size, radius, or spacing value — always use `var(--token-name)`.
 
 If the project has component-level structural tokens (like `--button-height-s` or `--input-border-radius`), use them. If not, use the semantic tokens directly (like `var(--radius-md)`).
 
@@ -356,6 +368,18 @@ Run this checklist mentally. Do not print it to the user — if something fails,
 10. **Naming**: classes follow `rly-{component}__...` convention.
 11. **Icons**: `currentColor` + `aria-hidden="true"`.
 12. **No guesswork**: if any behavior was assumed rather than confirmed — ask before delivering.
+
+## Step 9: Update STATUS.md
+
+After delivering the component, update `STATUS.md` in the project root:
+
+1. If a `## Components` table exists — add or update the component row:
+   ```
+   | ComponentName | ✅ | [node](figma-node-url) | variant × size × ... | |
+   ```
+2. If STATUS.md does not exist — skip this step and note it to the user: "Consider running ds-status-changelog to create STATUS.md."
+
+Do not create STATUS.md from scratch here — that is ds-status-changelog's responsibility.
 
 ---
 

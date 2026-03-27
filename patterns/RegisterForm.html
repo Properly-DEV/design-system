@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RegisterForm — Pattern Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../tokens/tokens.css" />
+  <style>
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    button { font: inherit; }
+    input  { font: inherit; }
+    a      { color: inherit; }
+
+    /* ── Page base ──────────────────────────────────────────────── */
+    body {
+      font-family: var(--font-family-body);
+      background: var(--colors-neutral-50);
+      min-height: 100vh;
+    }
+
+    /* ── State visibility ───────────────────────────────────────── */
+    [data-state]                                  { display: none !important; }
+    body[data-active="default"] [data-state="default"],
+    body[data-active="filled"]  [data-state="filled"],
+    body[data-active="loading"] [data-state="loading"],
+    body[data-active="error"]   [data-state="error"]   { display: flex !important; }
+
+    /* ── Prototype toolbar ──────────────────────────────────────── */
+    .proto-toolbar {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      background: var(--colors-bg-primary);
+      border: 1px solid var(--colors-border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 6px;
+      box-shadow: var(--shadow-sm);
+      z-index: 100;
+    }
+    .proto-toolbar button {
+      padding: 6px 14px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      font-size: var(--body-4-size);
+      line-height: var(--body-4-line-height);
+      cursor: pointer;
+      color: var(--colors-fg-secondary);
+      transition: background 0.15s, color 0.15s;
+    }
+    .proto-toolbar button.active {
+      background: var(--colors-bg-brand-primary);
+      color: var(--colors-fg-primary);
+      font-weight: 500;
+    }
+
+    /* ── Page layout ────────────────────────────────────────────── */
+    .proto-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 16px 24px;
+    }
+
+    /* ── Register card ──────────────────────────────────────────── */
+    .register-card {
+      width: 100%;
+      max-width: 500px;
+      background: var(--colors-bg-primary);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-10) var(--spacing-8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-6);
+    }
+
+    /* ── Logo ───────────────────────────────────────────────────── */
+    .register-card__logo {
+      font-family: var(--font-family-headings);
+      font-size: var(--heading-5-size);
+      line-height: var(--heading-5-line-height);
+      font-weight: 700;
+      color: var(--colors-fg-primary);
+      letter-spacing: -0.5px;
+    }
+
+    /* ── Header ─────────────────────────────────────────────────── */
+    .register-card__header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+    .register-card__title {
+      font-family: var(--font-family-headings);
+      font-size: var(--heading-3-size);
+      line-height: var(--heading-3-line-height);
+      font-weight: 400;
+      color: var(--colors-fg-primary);
+    }
+    .register-card__subtitle {
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      color: var(--colors-fg-secondary);
+      max-width: 360px;
+    }
+
+    /* ── Form panel ─────────────────────────────────────────────── */
+    .register-card__form-panel {
+      width: 100%;
+      background: var(--colors-neutral-25);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-4);
+    }
+
+    /* ── Input (mirrors Input.tsx) ──────────────────────────────── */
+    .rly-input { display: flex; flex-direction: column; gap: 4px; }
+
+    .rly-input__label {
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      font-weight: 400;
+      color: var(--colors-fg-tertiary);
+    }
+    .rly-input__field {
+      height: 48px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--colors-border-tertiary);
+      background: var(--colors-bg-primary);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .rly-input__field:hover { border-color: var(--colors-border-secondary); }
+    .rly-input__field:focus-within { border-color: var(--colors-border-secondary); }
+    .rly-input__field--error { border-color: var(--colors-border-system-error-primary); }
+    .rly-input__field--error:hover { border-color: var(--colors-border-system-error-primary); }
+
+    .rly-input__native {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: var(--body-2-size);
+      line-height: var(--body-2-line-height);
+      font-weight: 400;
+      color: var(--colors-fg-secondary);
+    }
+    .rly-input__native--filled { color: var(--colors-fg-primary); }
+    .rly-input__native:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .rly-input__error {
+      font-size: var(--body-4-size);
+      line-height: var(--body-4-line-height);
+      color: var(--colors-fg-system-error-primary);
+    }
+
+    /* ── Checkbox (mirrors Checkbox.tsx) ────────────────────────── */
+    .rly-checkbox {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .rly-checkbox__box {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      border-radius: var(--radius-xs);
+      border: 2px solid var(--colors-border-secondary);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .rly-checkbox__box--checked {
+      background: var(--colors-bg-brand-primary);
+      border-color: var(--colors-bg-brand-primary);
+    }
+    .rly-checkbox__check { display: none; }
+    .rly-checkbox__box--checked .rly-checkbox__check { display: block; }
+    .rly-checkbox__label {
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      color: var(--colors-fg-primary);
+    }
+    .rly-checkbox__label a {
+      color: var(--colors-fg-brand-primary);
+      text-decoration: underline;
+      text-decoration-style: dashed;
+    }
+
+    /* ── Button (mirrors Button.tsx, Primary/L) ─────────────────── */
+    .rly-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: var(--button-2-size);
+      line-height: var(--button-2-line-height);
+      font-weight: var(--button-2-weight);
+      color: var(--colors-fg-primary);
+      padding: 12px 8px;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.15s ease;
+      text-transform: capitalize;
+    }
+    .rly-button__label { padding: 0 6px; }
+    .rly-button--primary { background: var(--colors-bg-brand-primary); }
+    .rly-button--primary:hover { background: var(--colors-bg-brand-secondary); }
+    .rly-button--full-width { width: 100%; }
+    .rly-button--loading { cursor: wait; pointer-events: none; }
+    .rly-button--loading .rly-button__label { opacity: 0; }
+
+    .rly-button__spinner {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      animation: rly-spin 0.8s linear infinite;
+    }
+    @keyframes rly-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    /* ── Footer text + link button ──────────────────────────────── */
+    .register-card__footer-text {
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      color: var(--colors-fg-secondary);
+      text-align: center;
+    }
+    .rly-link-button {
+      background: none;
+      border: none;
+      border-bottom: 1px dashed var(--colors-fg-brand-primary);
+      color: var(--colors-fg-brand-primary);
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      cursor: pointer;
+      padding: 0 2px;
+    }
+
+    /* ── Divider ────────────────────────────────────────────────── */
+    .register-card__divider {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+    }
+    .register-card__divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--colors-border-tertiary);
+    }
+    .register-card__divider-label {
+      font-size: var(--body-3-size);
+      line-height: var(--body-3-line-height);
+      color: var(--colors-fg-tertiary);
+    }
+
+    /* ── Social row ─────────────────────────────────────────────── */
+    .register-card__social {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-4);
+    }
+
+    /* ── IconButton Secondary (mirrors IconButton.tsx) ──────────── */
+    .rly-icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--colors-border-secondary);
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      color: var(--colors-fg-secondary);
+      transition: border-color 0.15s;
+    }
+    .rly-icon-button:hover { border-color: var(--colors-border-primary); }
+  </style>
+</head>
+
+<body data-active="default">
+
+  <!-- ── Toolbar ──────────────────────────────────────────────── -->
+  <div class="proto-toolbar">
+    <button class="active" onclick="setState('default', this)">Default</button>
+    <button onclick="setState('filled', this)">Filled</button>
+    <button onclick="setState('loading', this)">Loading</button>
+    <button onclick="setState('error', this)">Error</button>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       STATE: Default — empty form, unchecked checkbox
+       ══════════════════════════════════════════════════════════ -->
+  <div data-state="default" class="proto-page">
+    <div class="register-card">
+
+      <div class="register-card__logo">PROPERLY®</div>
+
+      <div class="register-card__header">
+        <h1 class="register-card__title">Create your account</h1>
+        <p class="register-card__subtitle">Discover, invest, and grow with tokenized projects that are reshaping industries.</p>
+      </div>
+
+      <div class="register-card__form-panel">
+        <div class="rly-input">
+          <label class="rly-input__label">First name</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native" type="text" placeholder="e.g. Frank" />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Last name</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native" type="text" placeholder="e.g. Herbert" />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Email</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native" type="email" placeholder="e.g. name@company.com" />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Password</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native" type="password" placeholder="••••••••••" />
+          </div>
+        </div>
+
+        <label class="rly-checkbox">
+          <span class="rly-checkbox__box">
+            <svg class="rly-checkbox__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M5 10l3.5 3.5L15 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="rly-checkbox__label">I accept the <a href="#">Terms &amp; Privacy Policy</a></span>
+        </label>
+
+        <button class="rly-button rly-button--primary rly-button--full-width" type="submit">
+          <span class="rly-button__label">Sign Up</span>
+        </button>
+      </div>
+
+      <p class="register-card__footer-text">
+        Have an account? <button class="rly-link-button">Log in</button>
+      </p>
+
+      <div class="register-card__divider">
+        <div class="register-card__divider-line"></div>
+        <span class="register-card__divider-label">or</span>
+        <div class="register-card__divider-line"></div>
+      </div>
+
+      <div class="register-card__social">
+        <button class="rly-icon-button" aria-label="Sign up with Twitch">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 1L1.5 4v9.5H5V15l2.5-1.5H10l4-4V1H3zm10 8l-2 2H8.5L7 12.5V11H4V2.5h9V9z" fill="currentColor" opacity="0.7"/>
+            <path d="M11 4.5v3M8 4.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="rly-icon-button" aria-label="Sign up with Facebook">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M14 8a6 6 0 1 0-6.9 5.93V10H5.5V8h1.6V6.5c0-1.57.94-2.44 2.37-2.44.69 0 1.4.12 1.4.12V5.7h-.79c-.78 0-1.02.49-1.02.98V8h1.74l-.28 2H9.06v3.93A6 6 0 0 0 14 8z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+        <button class="rly-icon-button" aria-label="Sign up with LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 5h2v8h-2V5zm1-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM6 5h1.9v1.1C8.3 5.5 9 5 10.1 5c2 0 2.9 1 2.9 3.1V13H11V8.3c0-1.2-.4-1.8-1.2-1.8-.9 0-1.3.6-1.3 1.8V13H6V5z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       STATE: Filled — all fields populated, checkbox checked
+       ══════════════════════════════════════════════════════════ -->
+  <div data-state="filled" class="proto-page">
+    <div class="register-card">
+
+      <div class="register-card__logo">PROPERLY®</div>
+
+      <div class="register-card__header">
+        <h1 class="register-card__title">Create your account</h1>
+        <p class="register-card__subtitle">Discover, invest, and grow with tokenized projects that are reshaping industries.</p>
+      </div>
+
+      <div class="register-card__form-panel">
+        <div class="rly-input">
+          <label class="rly-input__label">First name</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="text" value="Frank" />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Last name</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="text" value="Herbert" />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Email</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="email" value="frank@company.com" />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Password</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="password" value="securepassword1" />
+          </div>
+        </div>
+
+        <label class="rly-checkbox">
+          <span class="rly-checkbox__box rly-checkbox__box--checked">
+            <svg class="rly-checkbox__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M5 10l3.5 3.5L15 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="rly-checkbox__label">I accept the <a href="#">Terms &amp; Privacy Policy</a></span>
+        </label>
+
+        <button class="rly-button rly-button--primary rly-button--full-width" type="submit">
+          <span class="rly-button__label">Sign Up</span>
+        </button>
+      </div>
+
+      <p class="register-card__footer-text">
+        Have an account? <button class="rly-link-button">Log in</button>
+      </p>
+
+      <div class="register-card__divider">
+        <div class="register-card__divider-line"></div>
+        <span class="register-card__divider-label">or</span>
+        <div class="register-card__divider-line"></div>
+      </div>
+
+      <div class="register-card__social">
+        <button class="rly-icon-button" aria-label="Sign up with Twitch">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 1L1.5 4v9.5H5V15l2.5-1.5H10l4-4V1H3zm10 8l-2 2H8.5L7 12.5V11H4V2.5h9V9z" fill="currentColor" opacity="0.7"/>
+            <path d="M11 4.5v3M8 4.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="rly-icon-button" aria-label="Sign up with Facebook">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M14 8a6 6 0 1 0-6.9 5.93V10H5.5V8h1.6V6.5c0-1.57.94-2.44 2.37-2.44.69 0 1.4.12 1.4.12V5.7h-.79c-.78 0-1.02.49-1.02.98V8h1.74l-.28 2H9.06v3.93A6 6 0 0 0 14 8z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+        <button class="rly-icon-button" aria-label="Sign up with LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 5h2v8h-2V5zm1-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM6 5h1.9v1.1C8.3 5.5 9 5 10.1 5c2 0 2.9 1 2.9 3.1V13H11V8.3c0-1.2-.4-1.8-1.2-1.8-.9 0-1.3.6-1.3 1.8V13H6V5z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       STATE: Loading — spinner on button, inputs disabled
+       ══════════════════════════════════════════════════════════ -->
+  <div data-state="loading" class="proto-page">
+    <div class="register-card">
+
+      <div class="register-card__logo">PROPERLY®</div>
+
+      <div class="register-card__header">
+        <h1 class="register-card__title">Create your account</h1>
+        <p class="register-card__subtitle">Discover, invest, and grow with tokenized projects that are reshaping industries.</p>
+      </div>
+
+      <div class="register-card__form-panel">
+        <div class="rly-input">
+          <label class="rly-input__label">First name</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="text" value="Frank" disabled />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Last name</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="text" value="Herbert" disabled />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Email</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="email" value="frank@company.com" disabled />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Password</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="password" value="securepassword1" disabled />
+          </div>
+        </div>
+
+        <label class="rly-checkbox" style="opacity: 0.4; cursor: not-allowed; pointer-events: none;">
+          <span class="rly-checkbox__box rly-checkbox__box--checked">
+            <svg class="rly-checkbox__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M5 10l3.5 3.5L15 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="rly-checkbox__label">I accept the <a href="#">Terms &amp; Privacy Policy</a></span>
+        </label>
+
+        <button class="rly-button rly-button--primary rly-button--full-width rly-button--loading" type="button" aria-busy="true">
+          <span class="rly-button__label">Sign Up</span>
+          <svg class="rly-button__spinner" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-opacity="0.2" stroke-width="2"/>
+            <path d="M8 2a6 6 0 0 1 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <p class="register-card__footer-text">
+        Have an account? <button class="rly-link-button" disabled style="opacity:0.4;cursor:not-allowed;">Log in</button>
+      </p>
+
+      <div class="register-card__divider">
+        <div class="register-card__divider-line"></div>
+        <span class="register-card__divider-label">or</span>
+        <div class="register-card__divider-line"></div>
+      </div>
+
+      <div class="register-card__social">
+        <button class="rly-icon-button" aria-label="Sign up with Twitch">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 1L1.5 4v9.5H5V15l2.5-1.5H10l4-4V1H3zm10 8l-2 2H8.5L7 12.5V11H4V2.5h9V9z" fill="currentColor" opacity="0.7"/>
+            <path d="M11 4.5v3M8 4.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="rly-icon-button" aria-label="Sign up with Facebook">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M14 8a6 6 0 1 0-6.9 5.93V10H5.5V8h1.6V6.5c0-1.57.94-2.44 2.37-2.44.69 0 1.4.12 1.4.12V5.7h-.79c-.78 0-1.02.49-1.02.98V8h1.74l-.28 2H9.06v3.93A6 6 0 0 0 14 8z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+        <button class="rly-icon-button" aria-label="Sign up with LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 5h2v8h-2V5zm1-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM6 5h1.9v1.1C8.3 5.5 9 5 10.1 5c2 0 2.9 1 2.9 3.1V13H11V8.3c0-1.2-.4-1.8-1.2-1.8-.9 0-1.3.6-1.3 1.8V13H6V5z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       STATE: Error — validation messages on Email + Password
+       ══════════════════════════════════════════════════════════ -->
+  <div data-state="error" class="proto-page">
+    <div class="register-card">
+
+      <div class="register-card__logo">PROPERLY®</div>
+
+      <div class="register-card__header">
+        <h1 class="register-card__title">Create your account</h1>
+        <p class="register-card__subtitle">Discover, invest, and grow with tokenized projects that are reshaping industries.</p>
+      </div>
+
+      <div class="register-card__form-panel">
+        <div class="rly-input">
+          <label class="rly-input__label">First name</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="text" value="Frank" />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Last name</label>
+          <div class="rly-input__field">
+            <input class="rly-input__native rly-input__native--filled" type="text" value="Herbert" />
+          </div>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Email</label>
+          <div class="rly-input__field rly-input__field--error">
+            <input class="rly-input__native rly-input__native--filled" type="email" value="frank@" aria-invalid="true" />
+          </div>
+          <p class="rly-input__error" role="alert">Please enter a valid email address.</p>
+        </div>
+
+        <div class="rly-input">
+          <label class="rly-input__label">Password</label>
+          <div class="rly-input__field rly-input__field--error">
+            <input class="rly-input__native" type="password" placeholder="••••••••••" aria-invalid="true" />
+          </div>
+          <p class="rly-input__error" role="alert">Password is required.</p>
+        </div>
+
+        <label class="rly-checkbox">
+          <span class="rly-checkbox__box">
+            <svg class="rly-checkbox__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M5 10l3.5 3.5L15 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="rly-checkbox__label">I accept the <a href="#">Terms &amp; Privacy Policy</a></span>
+        </label>
+
+        <button class="rly-button rly-button--primary rly-button--full-width" type="submit">
+          <span class="rly-button__label">Sign Up</span>
+        </button>
+      </div>
+
+      <p class="register-card__footer-text">
+        Have an account? <button class="rly-link-button">Log in</button>
+      </p>
+
+      <div class="register-card__divider">
+        <div class="register-card__divider-line"></div>
+        <span class="register-card__divider-label">or</span>
+        <div class="register-card__divider-line"></div>
+      </div>
+
+      <div class="register-card__social">
+        <button class="rly-icon-button" aria-label="Sign up with Twitch">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 1L1.5 4v9.5H5V15l2.5-1.5H10l4-4V1H3zm10 8l-2 2H8.5L7 12.5V11H4V2.5h9V9z" fill="currentColor" opacity="0.7"/>
+            <path d="M11 4.5v3M8 4.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="rly-icon-button" aria-label="Sign up with Facebook">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M14 8a6 6 0 1 0-6.9 5.93V10H5.5V8h1.6V6.5c0-1.57.94-2.44 2.37-2.44.69 0 1.4.12 1.4.12V5.7h-.79c-.78 0-1.02.49-1.02.98V8h1.74l-.28 2H9.06v3.93A6 6 0 0 0 14 8z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+        <button class="rly-icon-button" aria-label="Sign up with LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 5h2v8h-2V5zm1-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM6 5h1.9v1.1C8.3 5.5 9 5 10.1 5c2 0 2.9 1 2.9 3.1V13H11V8.3c0-1.2-.4-1.8-1.2-1.8-.9 0-1.3.6-1.3 1.8V13H6V5z" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <script>
+    function setState(state, btn) {
+      document.body.setAttribute('data-active', state);
+      document.querySelectorAll('.proto-toolbar button')
+        .forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

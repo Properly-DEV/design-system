@@ -11,11 +11,21 @@ Figma source file: `uRmtCnYBKrBsVM34hMgQyz`
 ## Architecture
 
 ```
-components/     # 8 React/TypeScript components (self-contained, no external deps)
+components/     # React/TypeScript components (self-contained, no external deps)
 tokens/         # tokens.css — single source of truth for all visual values
+patterns/       # Extracted UI patterns: {Name}.spec.md + {Name}.html + {Name}-audit.md
 docs/           # Static HTML documentation/showcase pages
 .claude/skills/ # Figma-to-React skill guide and reference patterns
 ```
+
+### patterns/ folder
+
+Each pattern consists of three files:
+- `{Name}.spec.md` — structured spec: anatomy (component tree), states, interactions, layout values, data contract, and **AI Agent Instructions** section with a ready TSX skeleton
+- `{Name}.html` — visual HTML prototype using tokens.css (for reference only)
+- `{Name}-audit.md` — Figma translation log: which layers map to which code, which tokens were used
+
+When building a view that matches an existing pattern, read the corresponding `.spec.md` first and follow the **AI Agent Instructions** section exactly.
 
 ## Component Conventions
 

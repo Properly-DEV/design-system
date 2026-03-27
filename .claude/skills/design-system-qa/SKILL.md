@@ -22,11 +22,17 @@ If the user's intent is ambiguous, default to Audit — it's non-destructive and
 
 Before evaluating any component, build a mental model of the project's conventions. This makes the audit universal — it adapts to whatever DS it encounters.
 
-Read `references/discovery-guide.md` and follow its instructions. In short:
+**Start with `CLAUDE.md`** — look for it in the project root first:
+- If it exists: read it. Extract token file path, CSS prefix, CSS strategy, component file structure. Use this as your convention profile — skip the discovery steps below.
+- If it does not exist: follow `references/discovery-guide.md` to profile from scratch.
+
+When CLAUDE.md is present, the only discovery step still needed is reading the component under audit. You already know the conventions.
+
+Read `references/discovery-guide.md` only when CLAUDE.md is absent. In short:
 
 1. **Find and read the token file** (CSS custom properties, theme object, or equivalent). Note the naming pattern, categories, and available values.
 2. **Read 2–3 existing components** that the team considers "done" or that were recently built. Note: CSS strategy (injected `<style>`, CSS modules, Tailwind, styled-components), class naming convention, props naming patterns, focus ring approach, disabled pattern.
-3. **Check for project docs** (CLAUDE.md, README, style guide) that declare conventions explicitly.
+3. **Check for project docs** (README, style guide) that declare conventions explicitly.
 
 If the project has only one component (the one being audited), skip convention profiling — evaluate against universal rules only.
 
