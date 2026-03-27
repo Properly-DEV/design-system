@@ -2,155 +2,217 @@
  * Component: Checkbox
  * Version: RLY Starter Kit — Light | Variables 2.0
  * Figma node: 8003:21540 (file: uRmtCnYBKrBsVM34hMgQyz)
- * Exported: 2026-03-24
+ * Exported: 2026-03-26
  *
  * Tokens: ../tokens/tokens.css
  * Variants:
- *   state     — Default | Hovered | Focused | Pressed | Disabled
- *   isChecked — No | Yes | Indeterminate
- *   showText  — boolean
+ *   checked       — boolean (InputHTMLAttributes)
+ *   indeterminate — boolean
+ *   disabled      — boolean (InputHTMLAttributes)
+ *   showText      — boolean
+ *
+ * Breaking changes from previous version:
+ *   - `state` prop removed — hover/focus/active/disabled are CSS pseudo-classes
+ *   - `isChecked` ("No"|"Yes"|"Indeterminate") replaced with `checked` (boolean) + `indeterminate` (boolean)
+ *   - `onChange` now receives a ChangeEvent<HTMLInputElement> (standard HTML semantics)
+ *   - `label` is now React.ReactNode (was string)
+ *   - Component now extends InputHTMLAttributes and uses forwardRef
+ *   - ...rest spreads to the native <input> element
  */
 
-import React, { CSSProperties } from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 
-export type CheckboxState   = "Default" | "Hovered" | "Focused" | "Pressed" | "Disabled";
-export type CheckboxChecked = "No" | "Yes" | "Indeterminate";
+// ── Types ───────────────────────────────────────────────────────────────────────
 
-export interface CheckboxProps {
-  label?:     string;
-  isChecked?: CheckboxChecked;
-  showText?:  boolean;
-  state?:     CheckboxState;
-  onChange?:  (value: CheckboxChecked) => void;
-  className?: string;
-  style?:     CSSProperties;
+export interface CheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+  label?:         React.ReactNode;
+  indeterminate?: boolean;
+  showText?:      boolean;
 }
 
-// ── Checkmark SVG ────────────────────────────────────────────────────────────
+// ── Styles ──────────────────────────────────────────────────────────────────────
+
+const STYLE_ID = "rly-checkbox-styles";
+
+const styles = `
+/* ── Wrapper ──────────────────────────────────────────────────── */
+.rly-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* TODO: replace with spacing token when available */
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ── Visually-hidden native input ─────────────────────────────── */
+.rly-checkbox__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ── Box (visual control) ─────────────────────────────────────── */
+.rly-checkbox__box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: var(--radius-xs);
+  border: 2px solid var(--colors-border-secondary);
+  background: transparent;
+  transition: border-color 0.15s, background 0.15s;
+  color: var(--colors-fg-primary);
+}
+
+/* ── Focus ring ───────────────────────────────────────────────── */
+.rly-checkbox__box::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px solid transparent;
+  border-radius: calc(var(--radius-xs) + 4px);
+  pointer-events: none;
+  transition: border-color 0.15s;
+}
+.rly-checkbox__input:focus-visible ~ .rly-checkbox__box::after {
+  border-color: var(--colors-border-focus);
+}
+
+/* ── Icons hidden by default ──────────────────────────────────── */
+.rly-checkbox__check,
+.rly-checkbox__indeterminate {
+  display: none;
+}
+
+/* ── Checked state ────────────────────────────────────────────── */
+.rly-checkbox__input:checked ~ .rly-checkbox__box,
+.rly-checkbox__input:indeterminate ~ .rly-checkbox__box {
+  background: var(--colors-bg-brand-primary);
+  border-color: var(--colors-bg-brand-primary);
+}
+.rly-checkbox__input:checked ~ .rly-checkbox__box .rly-checkbox__check {
+  display: block;
+}
+.rly-checkbox__input:indeterminate ~ .rly-checkbox__box .rly-checkbox__indeterminate {
+  display: block;
+}
+
+/* ── Hover — unchecked ────────────────────────────────────────── */
+.rly-checkbox:hover .rly-checkbox__input:not(:checked):not(:indeterminate):not(:disabled) ~ .rly-checkbox__box {
+  border-color: var(--colors-bg-brand-secondary);
+}
+
+/* ── Hover — checked / indeterminate ─────────────────────────── */
+.rly-checkbox:hover .rly-checkbox__input:checked:not(:disabled) ~ .rly-checkbox__box,
+.rly-checkbox:hover .rly-checkbox__input:indeterminate:not(:disabled) ~ .rly-checkbox__box {
+  background: var(--colors-bg-brand-secondary);
+  border-color: var(--colors-bg-brand-secondary);
+}
+
+/* ── Disabled ─────────────────────────────────────────────────── */
+.rly-checkbox:has(.rly-checkbox__input:disabled) {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Label text ───────────────────────────────────────────────── */
+.rly-checkbox__label {
+  font-family: var(--font-family-body);
+  font-size: var(--body-3-size);
+  line-height: var(--body-3-line-height);
+  font-weight: 400;
+  color: var(--colors-fg-primary);
+  white-space: nowrap;
+}
+`;
+
+function injectStyles() {
+  if (typeof document === "undefined") return;
+  if (document.getElementById(STYLE_ID)) return;
+  const el = document.createElement("style");
+  el.id = STYLE_ID;
+  el.textContent = styles;
+  document.head.appendChild(el);
+}
+
+// ── Icons ───────────────────────────────────────────────────────────────────────
+
 function CheckIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"
-      style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-      <rect width="20" height="20" rx="4" fill="currentColor" />
-      <path d="M5 10l3.5 3.5L15 7" stroke="var(--colors-fg-primary)" strokeWidth="2"
+    <svg className="rly-checkbox__check" width="20" height="20" viewBox="0 0 20 20"
+      fill="none" aria-hidden="true">
+      <path d="M5 10l3.5 3.5L15 7" stroke="currentColor" strokeWidth="2"
         strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-// ── Indeterminate (minus) SVG ────────────────────────────────────────────────
 function IndeterminateIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"
-      style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-      <rect width="20" height="20" rx="4" fill="currentColor" />
-      <path d="M6 10h8" stroke="var(--colors-fg-primary)" strokeWidth="2" strokeLinecap="round" />
+    <svg className="rly-checkbox__indeterminate" width="20" height="20" viewBox="0 0 20 20"
+      fill="none" aria-hidden="true">
+      <path d="M6 10h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
 
-// ── Box color helpers ────────────────────────────────────────────────────────
-function getBoxStyle(isChecked: CheckboxChecked, state: CheckboxState): CSSProperties {
-  const base: CSSProperties = {
-    position:     "relative",
-    width:        "20px",
-    height:       "20px",
-    borderRadius: "var(--radius-xs)",
-    flexShrink:   0,
-    transition:   "border-color 0.15s, background 0.15s",
-  };
+// ── Component ───────────────────────────────────────────────────────────────────
 
-  if (isChecked === "No") {
-    const isActive = state === "Hovered" || state === "Pressed" || state === "Focused";
-    return {
-      ...base,
-      border:     `2px solid ${isActive
-        ? "var(--colors-bg-brand-secondary)"   // #00b867 — active states
-        : "var(--colors-border-secondary)"}`,  // #c6c6c6 — default + disabled
-      background: "transparent",
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+  function Checkbox(
+    {
+      label         = "Checkbox",
+      indeterminate = false,
+      showText      = true,
+      className,
+      ...rest
+    },
+    ref
+  ) {
+    injectStyles();
+
+    const localRef = useRef<HTMLInputElement>(null);
+
+    // Merge external ref with local ref — needed for imperative .indeterminate write
+    const setRef = (el: HTMLInputElement | null) => {
+      (localRef as React.MutableRefObject<HTMLInputElement | null>).current = el;
+      if (typeof ref === "function") ref(el);
+      else if (ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = el;
     };
+
+    useEffect(() => {
+      if (localRef.current) localRef.current.indeterminate = indeterminate;
+    }, [indeterminate]);
+
+    return (
+      <label className={`rly-checkbox${className ? ` ${className}` : ""}`}>
+        <input
+          type="checkbox"
+          ref={setRef}
+          className="rly-checkbox__input"
+          {...rest}
+        />
+        <span className="rly-checkbox__box" aria-hidden="true">
+          <CheckIcon />
+          <IndeterminateIcon />
+        </span>
+        {showText && (
+          <span className="rly-checkbox__label">{label}</span>
+        )}
+      </label>
+    );
   }
-
-  // Yes or Indeterminate — filled
-  const isActive = ["Hovered", "Pressed", "Focused", "Disabled"].includes(state);
-  return {
-    ...base,
-    background: isActive
-      ? "var(--colors-bg-brand-secondary)"  // #00b867
-      : "var(--colors-bg-brand-primary)",   // #00ec88
-    color: isActive
-      ? "var(--colors-bg-brand-secondary)"
-      : "var(--colors-bg-brand-primary)",
-  };
-}
-
-// ── Component ────────────────────────────────────────────────────────────────
-export function Checkbox({
-  label     = "Checkbox",
-  isChecked = "No",
-  showText  = true,
-  state     = "Default",
-  onChange,
-  className,
-  style,
-}: CheckboxProps) {
-  const isFocused  = state === "Focused";
-  const isDisabled = state === "Disabled";
-
-  const wrapperStyle: CSSProperties = {
-    display:    "inline-flex",
-    alignItems: "center",
-    gap:        "8px",
-    opacity:    isDisabled ? 0.4 : 1,
-    cursor:     isDisabled ? "not-allowed" : "pointer",
-    ...style,
-  };
-
-  const controlStyle: CSSProperties = {
-    position:        "relative",
-    display:         "flex",
-    alignItems:      "center",
-    justifyContent:  "center",
-    width:           "24px",
-    height:          "24px",
-    flexShrink:      0,
-  };
-
-  const focusRingStyle: CSSProperties = {
-    position:     "absolute",
-    inset:        "1px",
-    border:       "2px solid var(--colors-border-focus)",
-    borderRadius: "var(--radius-xs)",
-    pointerEvents: "none",
-  };
-
-  const labelStyle: CSSProperties = {
-    fontFamily: "var(--font-family-body)",
-    fontSize:   "var(--body-3-size)",
-    lineHeight: "var(--body-3-line-height)",
-    fontWeight: 400,
-    color:      "var(--colors-fg-primary)",
-    whiteSpace: "nowrap",
-  };
-
-  function handleClick() {
-    if (isDisabled || !onChange) return;
-    const next: CheckboxChecked = isChecked === "No" ? "Yes" : "No";
-    onChange(next);
-  }
-
-  return (
-    <label className={className} style={wrapperStyle} onClick={handleClick}>
-      <div style={controlStyle}>
-        <div style={getBoxStyle(isChecked, state)}>
-          {isChecked === "Yes"           && <CheckIcon />}
-          {isChecked === "Indeterminate" && <IndeterminateIcon />}
-        </div>
-        {isFocused && <span style={focusRingStyle} aria-hidden="true" />}
-      </div>
-      {showText && <span style={labelStyle}>{label}</span>}
-    </label>
-  );
-}
+);
 
 export default Checkbox;
